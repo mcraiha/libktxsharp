@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\KtxSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="16x16_colors_Compressonator.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="16x16_colors_PVRTexTool.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="testimage_SIGNED_R11_EAC.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="ktx_specs.ktx" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

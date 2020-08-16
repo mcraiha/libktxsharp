@@ -1,6 +1,9 @@
 # libktxsharp
 C# library for handling [KTX File Format](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/)
 
+## Build status
+![](https://github.com/mcraiha/libktxsharp/workflows/CIBuild/badge.svg)
+
 ## Why
 Because KTX specs are public and I need something like this for my upcoming projects
 

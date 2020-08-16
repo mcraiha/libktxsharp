@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace KtxSharp
 {
-	public class KtxTextureData
+	public sealed class KtxTextureData
 	{
 		public readonly uint totalTextureDataLength;
 

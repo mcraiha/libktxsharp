@@ -2,7 +2,7 @@
 
 namespace KtxSharp
 {
-	public class KtxStructure
+	public sealed class KtxStructure
 	{
 		public readonly KtxHeader header;
 		

@@ -1,5 +1,4 @@
 // Common global values
-using System.Linq;
 
 namespace KtxSharp
 {

@@ -1,10 +1,9 @@
 // MetadataValue class
 using System;
-using System.Linq;
 
 namespace KtxSharp
 {
-	public class MetadataValue
+	public sealed class MetadataValue
 	{
 
 		public readonly bool isString;

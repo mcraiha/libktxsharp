@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace KtxSharp
 {
 	// Based on specifications mentioned in https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/
-	public class KtxHeader
+	public sealed class KtxHeader
 	{	
 		public readonly bool isInputLittleEndian;
 		public readonly uint endiannessValue;

@@ -83,6 +83,28 @@ namespace Tests
 		}
 
 		[Test]
+		public void ValidityWithInvalidSamplesTest()
+		{
+			// Arrange
+			byte[] inputBytes4 = File.ReadAllBytes(validSample4Filename);	
+
+			// Act
+			inputBytes4[73] = 0xC0; // Make string invalid UTF-8
+			inputBytes4[74] = 0xB1;
+
+			bool wasTest4Valid = false;
+			string test4PossibleError = "";
+			using (MemoryStream ms4 = new MemoryStream(inputBytes4))
+			{
+				(wasTest4Valid, test4PossibleError) = KtxLoader.CheckIfInputIsValid(ms4);
+			}
+
+			// Assert
+			Assert.IsFalse(wasTest4Valid);
+			Assert.IsTrue(test4PossibleError.Contains("Byte array to UTF-8 failed"));
+		}
+
+		[Test]
 		public void CheckHeadersWithValidSamplesTest()
 		{
 			// Arrange

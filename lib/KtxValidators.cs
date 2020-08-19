@@ -189,7 +189,16 @@ namespace KtxSharp
 					return (isValid: false, possibleError: "Metadata: KeyValue pair does not contain NUL byte!");
 				}
 
-				// TODO: Check if key is valid UTF-8 byte combination
+				// Check if key is valid UTF-8 byte combination
+				try
+				{
+					UTF8Encoding utf8ThrowException = new UTF8Encoding(false, true);
+					string notUsed = utf8ThrowException.GetString(keyAndValueAsBytes, 0, keyAndValueAsBytes.Length);
+				}
+				catch (Exception e)
+				{
+					return (isValid: false, possibleError: $"Byte array to UTF-8 failed: {e}!");
+				}
 
 				currentPosition += combinedKeyAndValueSize;
 

@@ -35,10 +35,10 @@ namespace KtxSharp
 		/// Constructor for texture data
 		/// </summary>
 		/// <param name="header">Header</param>
-		/// <param name="memoryStream">Memory stream for reading</param>
-		public KtxTextureData(KtxHeader header, MemoryStream memoryStream)
+		/// <param name="stream">Stream for reading</param>
+		public KtxTextureData(KtxHeader header, Stream stream)
 		{
-			this.totalTextureDataLength = (uint)memoryStream.Length;
+			this.totalTextureDataLength = (uint)stream.Length;
 
 			// Try to figure out texture type basic
 			bool containsMipmaps = header.numberOfMipmapLevels > 1;
@@ -94,7 +94,7 @@ namespace KtxSharp
 			// Check if length reads should be endian swapped
 			bool shouldSwapEndianness = (header.endiannessValue != Common.expectedEndianValue);
 
-			using (BinaryReader reader = new BinaryReader(memoryStream, Encoding.UTF8, leaveOpen: true))
+			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
 				for (int i = 0; i < mipmapLevels; i++)
 				{

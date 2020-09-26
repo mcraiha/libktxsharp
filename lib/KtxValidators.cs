@@ -42,14 +42,14 @@ namespace KtxSharp
 		/// <summary>
 		/// Validate header data
 		/// </summary>
-		/// <param name="memoryStream">Memory stream for reading</param>
+		/// <param name="stream">Stream for reading</param>
 		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
-		public static (bool isValid, string possibleError) ValidateHeaderData(MemoryStream memoryStream)
+		public static (bool isValid, string possibleError) ValidateHeaderData(Stream stream)
 		{
 			// Use the memory stream in a binary reader.
 			try
 			{
-				using (BinaryReader reader = new BinaryReader(memoryStream, Encoding.UTF8, leaveOpen: true))
+				using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 				{
 					// Start validating header
 					byte[] tempIdentifier = reader.ReadBytes(Common.onlyValidIdentifier.Length);
@@ -129,16 +129,16 @@ namespace KtxSharp
 		/// <summary>
 		/// Validate texture data
 		/// </summary>
-		/// <param name="memoryStream">Memory stream for reading</param>
+		/// <param name="stream">Stream for reading</param>
 		/// <param name="header">Header</param>
 		/// <param name="expectedTextureDataSize">Expected texture data size</param>
 		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
-		public static (bool isValid, string possibleError) ValidateTextureData(MemoryStream memoryStream, KtxHeader header, uint expectedTextureDataSize)
+		public static (bool isValid, string possibleError) ValidateTextureData(Stream stream, KtxHeader header, uint expectedTextureDataSize)
 		{
-			// Use the memory stream in a binary reader.
+			// Use the stream in a binary reader.
 			try
 			{
-				using (BinaryReader reader = new BinaryReader(memoryStream, Encoding.UTF8, leaveOpen: true))
+				using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 				{
 					// Specs say that if value of certain things is zero (0) then it should be used as one (1) 
 					uint mipmapLevels = (header.numberOfMipmapLevels == 0) ? 1 : header.numberOfMipmapLevels;

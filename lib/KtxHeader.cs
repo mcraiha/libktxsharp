@@ -110,15 +110,15 @@ namespace KtxSharp
 		/// <summary>
 		/// KtxHeader constructor
 		/// </summary>
-		/// <param name="memoryStream">Memorystream for reading</param>
-		public KtxHeader(MemoryStream memoryStream)
+		/// <param name="stream">Stream for reading</param>
+		public KtxHeader(Stream stream)
 		{
 			// Skip first 12 bytes since they only contain identifier
-			memoryStream.Seek(12, SeekOrigin.Begin);
+			stream.Seek(12, SeekOrigin.Begin);
 
 			// Read endianness as bytes
 			byte[] endiannessBytes = new byte[4];
-			int bytesRead = memoryStream.Read(buffer: endiannessBytes, offset: 0, count: endiannessBytes.Length);
+			int bytesRead = stream.Read(buffer: endiannessBytes, offset: 0, count: endiannessBytes.Length);
 
 			if (bytesRead != 4)
 			{
@@ -139,7 +139,7 @@ namespace KtxSharp
 			bool shouldSwapEndianness = (this.endiannessValue != Common.expectedEndianValue);
 
 			// Use the memory stream in a binary reader.
-            using (BinaryReader reader = new BinaryReader(memoryStream, Encoding.UTF8, leaveOpen: true))
+            using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
 				// Swap endianness for every KTX variable if needed
 				

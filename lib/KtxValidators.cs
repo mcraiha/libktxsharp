@@ -6,11 +6,19 @@ using System.Linq;
 
 namespace KtxSharp
 {
+	/// <summary>
+	/// Static class for Ktx validation
+	/// </summary>
 	public static class KtxValidators
 	{
 		// There must be at least 64 bytes of input
         private static readonly int minInputSizeInBytes = 64;
 
+		/// <summary>
+		/// Generic stream validation
+		/// </summary>
+		/// <param name="stream">Input stream to read</param>
+		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
 		public static (bool isValid, string possibleError) GenericStreamValidation(Stream stream)
 		{
 			if (stream == null)
@@ -31,6 +39,11 @@ namespace KtxSharp
 			return (isValid: true, possibleError: "");
 		}
 
+		/// <summary>
+		/// Validate header data
+		/// </summary>
+		/// <param name="memoryStream">Memory stream for reading</param>
+		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
 		public static (bool isValid, string possibleError) ValidateHeaderData(MemoryStream memoryStream)
 		{
 			// Use the memory stream in a binary reader.
@@ -113,6 +126,13 @@ namespace KtxSharp
 			return (isValid: true, possibleError: "");
 		}
 
+		/// <summary>
+		/// Validate texture data
+		/// </summary>
+		/// <param name="memoryStream">Memory stream for reading</param>
+		/// <param name="header">Header</param>
+		/// <param name="expectedTextureDataSize">Expected texture data size</param>
+		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
 		public static (bool isValid, string possibleError) ValidateTextureData(MemoryStream memoryStream, KtxHeader header, uint expectedTextureDataSize)
 		{
 			// Use the memory stream in a binary reader.

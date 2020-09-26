@@ -6,37 +6,111 @@ using System.Collections.Generic;
 
 namespace KtxSharp
 {
-	// Based on specifications mentioned in https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/
+	/// <summary>
+	/// KtxHeader class
+	/// </summary>
+	/// <remark>Based on specifications mentioned in https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/</remark>
 	public sealed class KtxHeader
-	{	
+	{
+		/// <summary>
+		/// Is input little endian
+		/// </summary>
 		public readonly bool isInputLittleEndian;
+
+		/// <summary>
+		/// Endianness value
+		/// </summary>
 		public readonly uint endiannessValue;
 
+		/// <summary>
+		/// Is data uncompressed
+		/// </summary>
 		public readonly bool isUncompressed;
+
+		/// <summary>
+		/// GlType as uint
+		/// </summary>
 		public readonly uint glTypeAsUint;
+
+		/// <summary>
+		/// GlDataType
+		/// </summary>
 		public readonly GlDataType glDataType;
 		
+		/// <summary>
+		/// GlType size as uint
+		/// </summary>
 		public readonly uint glTypeSizeAsUint;
 
+		/// <summary>
+		/// GlFormat as uint
+		/// </summary>
 		public readonly uint glFormatAsUint;
 
+		/// <summary>
+		/// GlInternalFormat as uint
+		/// </summary>
 		public readonly uint glInternalFormatAsUint;
+
+		/// <summary>
+		/// GlInternalFormat
+		/// </summary>
 		public readonly GlInternalFormat glInternalFormat;
 
+		/// <summary>
+		/// GlBaseInternal as uint
+		/// </summary>
 		public readonly uint glBaseInternalFormatAsUint;
+
+		/// <summary>
+		/// GlPixelFormat
+		/// </summary>
 		public readonly GlPixelFormat glPixelFormat;
 
+		/// <summary>
+		/// Width in pixels
+		/// </summary>
 		public readonly uint pixelWidth;
+
+		/// <summary>
+		/// Height in pixels
+		/// </summary>
 		public readonly uint pixelHeight;
+
+		/// <summary>
+		/// Depth in pixels
+		/// </summary>
 		public readonly uint pixelDepth;
+
+		/// <summary>
+		/// Number of array elements
+		/// </summary>
 		public readonly uint numberOfArrayElements;
+
+		/// <summary>
+		/// Number of faces
+		/// </summary>
 		public readonly uint numberOfFaces;
+
+		/// <summary>
+		/// Number of mipmap levels
+		/// </summary>
 		public readonly uint numberOfMipmapLevels;
+
+		/// <summary>
+		/// How many bytes of key value data there is
+		/// </summary>
 		public readonly uint bytesOfKeyValueData;
 
+		/// <summary>
+		/// Metadata dictionary (key is string)
+		/// </summary>
 		public readonly Dictionary<string, MetadataValue> metadataDictionary;
 
-
+		/// <summary>
+		/// KtxHeader constructor
+		/// </summary>
+		/// <param name="memoryStream">Memorystream for reading</param>
 		public KtxHeader(MemoryStream memoryStream)
 		{
 			// Skip first 12 bytes since they only contain identifier
@@ -193,6 +267,10 @@ namespace KtxSharp
 
 		#region ToString
 
+		/// <summary>
+		/// Print some info into string
+		/// </summary>
+		/// <returns>String</returns>
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

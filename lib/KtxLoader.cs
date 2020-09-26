@@ -3,10 +3,17 @@ using System.IO;
 
 namespace KtxSharp
 {
+    /// <summary>
+    /// Load Ktx input static class
+    /// </summary>
     public static class KtxLoader
     {
         
-
+        /// <summary>
+        /// Check if input is valid
+        /// </summary>
+        /// <param name="memoryStream">Memorystream to check</param>
+        /// <returns>Tuple that tells if input is valid, and possible error message</returns>
         public static (bool isValid, string possibleError) CheckIfInputIsValid(MemoryStream memoryStream)
         {
             // Currently only header and metadata are validated properly, so texture data can still contain invalid values
@@ -33,6 +40,11 @@ namespace KtxSharp
             return (isValid: isTextureDataValid, possibleError: possibleTextureDataError);
         }
 
+        /// <summary>
+        /// Load KtxStructure from memorystream
+        /// </summary>
+        /// <param name="memoryStream">Memorystream to read</param>
+        /// <returns>KtxStructure</returns>
         public static KtxStructure LoadInput(MemoryStream memoryStream)
         {
             // First we read the header

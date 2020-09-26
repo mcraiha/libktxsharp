@@ -6,16 +6,36 @@ using System.Collections.Generic;
 
 namespace KtxSharp
 {
+	/// <summary>
+	/// Texture data class
+	/// </summary>
 	public sealed class KtxTextureData
 	{
+		/// <summary>
+		/// How many bytes of texture data there is
+		/// </summary>
 		public readonly uint totalTextureDataLength;
 
+		/// <summary>
+		/// Texture data as raw bytes
+		/// </summary>
 		public readonly byte[] textureDataAsRawBytes;
 
+		/// <summary>
+		/// Texture type (basic)
+		/// </summary>
 		public readonly TextureTypeBasic textureType;
 
+		/// <summary>
+		/// Texture data for each mip map level
+		/// </summary>
 		public List<byte[]> textureDataOfMipmapLevel;
 
+		/// <summary>
+		/// Constructor for texture data
+		/// </summary>
+		/// <param name="header">Header</param>
+		/// <param name="memoryStream">Memory stream for reading</param>
 		public KtxTextureData(KtxHeader header, MemoryStream memoryStream)
 		{
 			this.totalTextureDataLength = (uint)memoryStream.Length;

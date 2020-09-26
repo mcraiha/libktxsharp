@@ -201,6 +201,43 @@ namespace KtxSharp
 			}
 		}
 
+		/// <summary>
+		/// Write content to stream. Leaves stream open
+		/// </summary>
+		/// <param name="output">Output stream</param>
+		public void WriteTo(Stream output)
+		{
+			using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8, leaveOpen: true))
+			{
+				writer.Write(Common.expectedEndianValue);
+				writer.Write(this.glTypeAsUint);
+				writer.Write(this.glTypeSizeAsUint);
+				writer.Write(this.glFormatAsUint);
+				writer.Write(this.glInternalFormatAsUint);
+				writer.Write(this.glBaseInternalFormatAsUint);
+				writer.Write(this.pixelWidth);
+				writer.Write(this.pixelHeight);
+				writer.Write(this.pixelDepth);
+				writer.Write(this.numberOfArrayElements);
+				writer.Write(this.numberOfFaces);
+				writer.Write(this.numberOfMipmapLevels);
+				writer.Write(GetTotalSizeOfMetadata(this.metadataDictionary));
+				foreach (var pair in this.metadataDictionary)
+				{
+					uint keyLenght = Common.GetLengthOfUtf8StringAsBytes(pair.Key) + 1;
+					uint valueLength = pair.Value.GetSizeInBytes();
+					writer.Write(keyLenght + valueLength);
+					writer.Write(Common.GetUtf8StringAsBytes(pair.Key));
+					writer.Write(Common.nulByte);
+					writer.Write(pair.Value.GetAsBytes());
+					if (pair.Value.isString)
+					{
+						writer.Write(Common.nulByte);
+					}
+				}
+			}
+		}
+
 		#region Parse metadata
 
 		private static Dictionary<string, MetadataValue> ParseMetadata(byte[] inputArray, bool shouldSwapEndianness)
@@ -263,6 +300,30 @@ namespace KtxSharp
 		}
 
 		#endregion // Parse metadata
+
+		#region Write metadata
+
+		private static uint GetTotalSizeOfMetadata(Dictionary<string, MetadataValue> pairs)
+		{
+			uint totalCount = 0;
+
+			foreach (var pair in pairs)
+			{
+				totalCount += 4; // Size is always 4 bytes uint
+				totalCount += Common.GetLengthOfUtf8StringAsBytes(pair.Key) + 1;
+				totalCount += pair.Value.GetSizeInBytes();
+			}
+
+			// Add value padding if needed
+			while (totalCount % 4 != 0)
+			{
+				totalCount++;
+			}
+
+			return totalCount;
+		}
+
+		#endregion // Write metadata
 
 
 		#region ToString

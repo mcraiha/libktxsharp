@@ -38,7 +38,7 @@ namespace KtxSharp
 		/// <param name="stream">Stream for reading</param>
 		public KtxTextureData(KtxHeader header, Stream stream)
 		{
-			this.totalTextureDataLength = (uint)stream.Length;
+			//this.totalTextureDataLength = (uint)stream.Length;
 
 			// Try to figure out texture type basic
 			bool containsMipmaps = header.numberOfMipmapLevels > 1;
@@ -110,6 +110,22 @@ namespace KtxSharp
 					}
 				}
 			}			
+		}
+
+		/// <summary>
+		/// Write content to stream. Leaves stream open
+		/// </summary>
+		/// <param name="output">Output stream</param>
+		public void WriteTo(Stream output)
+		{
+			using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8, leaveOpen: true))
+			{
+				foreach (byte[] level in this.textureDataOfMipmapLevel)
+				{
+					writer.Write((uint)level.Length);
+					writer.Write(level);
+				}
+			}
 		}
 	}
 }

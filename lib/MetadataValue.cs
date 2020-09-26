@@ -1,5 +1,5 @@
-// MetadataValue class
 using System;
+using System.IO;
 
 namespace KtxSharp
 {
@@ -45,6 +45,38 @@ namespace KtxSharp
 				this.bytesValue = input;
 
 				this.stringValue = null;
+			}
+		}
+
+		/// <summary>
+		/// How many bytes this will take on memory
+		/// </summary>
+		/// <returns>Byte amount</returns>
+		public uint GetSizeInBytes()
+		{
+			if (isString)
+			{
+				return Common.GetLengthOfUtf8StringAsBytes(this.stringValue) + 1 /* NUL byte length */;
+			}
+			else
+			{
+				return (uint)this.bytesValue.Length;
+			}
+		}
+
+		/// <summary>
+		/// Get value as byte array
+		/// </summary>
+		/// <returns>Byte array</returns>
+		public byte[] GetAsBytes()
+		{
+			if (isString)
+			{
+				return Common.GetUtf8StringAsBytes(this.stringValue);
+			}
+			else
+			{
+				return this.bytesValue;
 			}
 		}
 	}

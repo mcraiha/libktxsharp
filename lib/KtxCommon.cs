@@ -1,9 +1,10 @@
-// Common global values
+using System.Text;
 
+// Common global values
 namespace KtxSharp
 {
 	/// <summary>
-	/// Common  values
+	/// Common values
 	/// </summary>
 	public static class Common
 	{
@@ -46,6 +47,25 @@ namespace KtxSharp
 		/// <returns></returns>
 		public static readonly int sizeOfUint = sizeof(uint);
 
+		/// <summary>
+		/// Get length of UTF-8 string as bytes
+		/// </summary>
+		/// <param name="inputString">Input string</param>
+		/// <returns>Length in bytes</returns>
+		public static uint GetLengthOfUtf8StringAsBytes(string inputString)
+		{
+			return (uint)Encoding.UTF8.GetByteCount(inputString);
+		}
+
+		/// <summary>
+		/// Get UTF-8 string as byte array
+		/// </summary>
+		/// <param name="inputString">Input string</param>
+		/// <returns>Byte array</returns>
+		public static byte[] GetUtf8StringAsBytes(string inputString)
+		{
+			return Encoding.UTF8.GetBytes(inputString);
+		}
 	}
 
 	/// <summary>

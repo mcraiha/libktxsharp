@@ -58,7 +58,6 @@ dotnet test
 
 ## What is missing
 * KTX write support
-* CI
 * Nuget
 * More files for testing
 * Benchmarks

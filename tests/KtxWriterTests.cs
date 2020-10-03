@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using KtxSharp;
+using System;
 using System.IO;
 
 namespace Tests
@@ -46,6 +47,27 @@ namespace Tests
 			CollectionAssert.AreEqual(inputBytes1, msWriter1.ToArray());
 			CollectionAssert.AreEqual(inputBytes2, msWriter2.ToArray());
 			CollectionAssert.AreEqual(inputBytes3, msWriter3.ToArray());
+		}
+
+		[Test]
+		public void NullOrInvalidInputsTest()
+		{
+			// Arrange
+			KtxStructure structure = null;
+			
+			MemoryStream msWriter = new MemoryStream();
+			MemoryStream msWriterNonWriteable = new MemoryStream(new byte[] { 0 }, writable: false);
+
+			// Act
+			using (FileStream input = new FileStream(CommonFiles.validSample1Filename, FileMode.Open))
+			{
+				structure = KtxLoader.LoadInput(input);
+			}
+
+			// Assert
+			Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(null, msWriter); });
+			Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(structure, null); });
+			Assert.Throws<ArgumentException>(() => { KtxWriter.WriteTo(structure, msWriterNonWriteable); });
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace KtxSharp
 		public static readonly byte[] littleEndianAsBytes = new byte[] { 0x01, 0x02, 0x03, 0x04 };
 
 		/// <summary>
-		/// NUL is used to terminate UTF-8 strings
+		/// NUL is used to terminate UTF-8 strings, and padd metadata
 		/// </summary>
 		public static readonly byte nulByte = 0;
 

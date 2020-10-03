@@ -226,13 +226,21 @@ namespace KtxSharp
 				{
 					uint keyLenght = Common.GetLengthOfUtf8StringAsBytes(pair.Key) + 1;
 					uint valueLength = pair.Value.GetSizeInBytes();
-					writer.Write(keyLenght + valueLength);
+					uint totalLength = keyLenght + valueLength;
+					writer.Write(totalLength);
 					writer.Write(Common.GetUtf8StringAsBytes(pair.Key));
 					writer.Write(Common.nulByte);
 					writer.Write(pair.Value.GetAsBytes());
 					if (pair.Value.isString)
 					{
 						writer.Write(Common.nulByte);
+					}
+
+					// Write padding if needed
+					while (totalLength % 4 != 0)
+					{
+						writer.Write(Common.nulByte);
+						totalLength++;
 					}
 				}
 			}

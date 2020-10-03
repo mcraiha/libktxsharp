@@ -6,20 +6,13 @@ namespace Tests
 {
 	public class KtxWriterTests
 	{
-		// If you add any more test files here, remember to add them to tests.csproj !
-
-		/// <summary>
-		/// First sample file is created with Compressonator https://github.com/GPUOpen-Tools/Compressonator
-		/// </summary>
-		private static readonly string validSample1Filename = "16x16_colors_Compressonator.ktx";
-
         [Test]
 		public void ValidityWithValidSamplesTest()
 		{
 			// Arrange
-			byte[] inputBytes1 = File.ReadAllBytes(validSample1Filename);
+			byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);
 
-            MemoryStream msWriter = new MemoryStream();
+            MemoryStream msWriter1 = new MemoryStream();
 
             // Act
             KtxStructure ktxStructure1 = null;
@@ -28,10 +21,10 @@ namespace Tests
 				ktxStructure1 = KtxLoader.LoadInput(msReader);
 			}
 
-            KtxWriter.WriteTo(ktxStructure1, msWriter);
+            KtxWriter.WriteTo(ktxStructure1, msWriter1);
 
             // Assert
-            CollectionAssert.AreEqual(inputBytes1, msWriter.ToArray());
+            CollectionAssert.AreEqual(inputBytes1, msWriter1.ToArray());
         }
     }
 }

@@ -133,13 +133,27 @@ namespace Tests
 			Assert.AreEqual(GlInternalFormat.GL_RGBA8_OES, ktxStructure1.header.glInternalFormat);
 			Assert.AreEqual((uint)GlInternalFormat.GL_RGBA8_OES, ktxStructure1.header.glInternalFormatAsUint);
 			
+
 			// PVRTexTool sample file resolution
 			Assert.AreEqual(16, ktxStructure2.header.pixelWidth);
 			Assert.AreEqual(16, ktxStructure2.header.pixelHeight);
 
+			// PVRTexTool sample file Data type and internal format
+			Assert.AreEqual(GlDataType.GL_UNSIGNED_BYTE, ktxStructure2.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.GL_UNSIGNED_BYTE, ktxStructure2.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_RGBA8_OES, ktxStructure2.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_RGBA8_OES, ktxStructure2.header.glInternalFormatAsUint);
+
+
 			// ETCPACK sample file resolution
 			Assert.AreEqual(2048, ktxStructure3.header.pixelWidth);
 			Assert.AreEqual(32, ktxStructure3.header.pixelHeight);
+
+			// ETCPACK sample file Data type and internal format
+			Assert.AreEqual(GlDataType.Compressed, ktxStructure3.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure3.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_COMPRESSED_SIGNED_R11_EAC, ktxStructure3.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_COMPRESSED_SIGNED_R11_EAC, ktxStructure3.header.glInternalFormatAsUint);
 
 			// ktx_specs.ktx resolution
 			Assert.AreEqual(32, ktxStructure4.header.pixelWidth);

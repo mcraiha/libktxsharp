@@ -46,7 +46,7 @@ namespace KtxSharp
 		/// <returns>Tuple that tells if stream is valid, and possible error</returns>
 		public static (bool isValid, string possibleError) ValidateHeaderData(Stream stream)
 		{
-			// Use the memory stream in a binary reader.
+			// Use the stream in a binary reader.
 			try
 			{
 				using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))

@@ -122,7 +122,7 @@ namespace KtxSharp
 
 			if (bytesRead != 4)
 			{
-				throw new InvalidOperationException("Cannot read enough bytes from memory stream!");
+				throw new InvalidOperationException("Cannot read enough bytes from stream!");
 			}
 
 			if (!Common.littleEndianAsBytes.SequenceEqual(endiannessBytes) && !Common.bigEndianAsBytes.SequenceEqual(endiannessBytes))
@@ -138,7 +138,7 @@ namespace KtxSharp
 			// See if following uint reads need endian swap
 			bool shouldSwapEndianness = (this.endiannessValue != Common.expectedEndianValue);
 
-			// Use the memory stream in a binary reader.
+			// Use the stream in a binary reader.
             using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
 				// Swap endianness for every KTX variable if needed

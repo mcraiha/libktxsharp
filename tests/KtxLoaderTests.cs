@@ -126,6 +126,12 @@ namespace Tests
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);
 			Assert.AreEqual(16, ktxStructure1.header.pixelHeight);
+
+			// Compressonator sample file Data type and internal format
+			Assert.AreEqual(GlDataType.GL_UNSIGNED_BYTE, ktxStructure1.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.GL_UNSIGNED_BYTE, ktxStructure1.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_RGBA8_OES, ktxStructure1.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_RGBA8_OES, ktxStructure1.header.glInternalFormatAsUint);
 			
 			// PVRTexTool sample file resolution
 			Assert.AreEqual(16, ktxStructure2.header.pixelWidth);

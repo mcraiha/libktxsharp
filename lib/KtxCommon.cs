@@ -146,6 +146,16 @@ namespace KtxSharp
 	public enum GlInternalFormat : uint
 	{
 		/// <summary>
+		/// RGB8
+		/// </summary>
+		GL_RGB8_OES = 0x8051,
+
+		/// <summary>
+		/// RGBA8
+		/// </summary>
+		GL_RGBA8_OES = 0x8058,
+
+		/// <summary>
 		/// RGB S3TC DXT1
 		/// </summary>
 		GL_COMPRESSED_RGB_S3TC_DXT1_EXT = 0x83F0,

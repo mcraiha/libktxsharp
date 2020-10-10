@@ -48,6 +48,11 @@ namespace KtxSharp
 		public readonly uint glFormatAsUint;
 
 		/// <summary>
+		/// GlFormat as GlPixelFormat
+		/// </summary>
+		public readonly GlPixelFormat glFormat;
+
+		/// <summary>
 		/// GlInternalFormat as uint
 		/// </summary>
 		public readonly uint glInternalFormatAsUint;
@@ -156,6 +161,14 @@ namespace KtxSharp
 				this.glTypeSizeAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
 
 				this.glFormatAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				if (GlPixelFormat.IsDefined(typeof(GlPixelFormat), this.glFormatAsUint))
+				{
+					this.glFormat = (GlPixelFormat)this.glFormatAsUint;
+				}
+				else
+				{
+					this.glFormat = GlPixelFormat.NotKnown;
+				}
 
 				this.glInternalFormatAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
 				if (GlInternalFormat.IsDefined(typeof(GlInternalFormat), this.glInternalFormatAsUint))

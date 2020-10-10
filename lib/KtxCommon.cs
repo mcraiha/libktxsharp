@@ -120,6 +120,36 @@ namespace KtxSharp
 	public enum GlPixelFormat : uint
 	{
 		/// <summary>
+		/// GL_COLOR_INDEX
+		/// </summary>
+		GL_COLOR_INDEX = 0x1900,
+
+		/// <summary>
+		/// GL_STENCIL_INDEX
+		/// </summary>
+		GL_STENCIL_INDEX = 0x1901,
+
+		/// <summary>
+		/// GL_DEPTH_COMPONENT
+		/// </summary>
+		GL_DEPTH_COMPONENT = 0x1902,
+
+		/// <summary>
+		/// GL_RED
+		/// </summary>
+		GL_RED = 0x1903,
+
+		/// <summary>
+		/// GL_GREEN
+		/// </summary>
+		GL_GREEN = 0x1904,
+
+		/// <summary>
+		/// GL_BLUE
+		/// </summary>
+		GL_BLUE = 0x1905,
+
+		/// <summary>
 		/// GL_ALPHA
 		/// </summary>
 		GL_ALPHA = 0x1906,
@@ -130,9 +160,19 @@ namespace KtxSharp
 		GL_RGB = 0x1907,
 
 		/// <summary>
-		/// GL_RGBA 
+		/// GL_RGBA
 		/// </summary>
 		GL_RGBA = 0x1908,
+
+		/// <summary>
+		/// GL_LUMINANCE
+		/// </summary>
+		GL_LUMINANCE = 0x1909,
+
+		/// <summary>
+		/// GL_LUMINANCE_ALPHA
+		/// </summary>
+		GL_LUMINANCE_ALPHA = 0x190A,
 
 		/// <summary>
 		/// Custom value for situation where parser cannot identify format

@@ -127,6 +127,10 @@ namespace Tests
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);
 			Assert.AreEqual(16, ktxStructure1.header.pixelHeight);
 
+			// Compressonator sample file format
+			Assert.AreEqual(GlPixelFormat.GL_RGBA, ktxStructure1.header.glFormat);
+			Assert.AreEqual((uint)GlPixelFormat.GL_RGBA, ktxStructure1.header.glFormatAsUint);
+
 			// Compressonator sample file Data type and internal format
 			Assert.AreEqual(GlDataType.GL_UNSIGNED_BYTE, ktxStructure1.header.glDataType);
 			Assert.AreEqual((uint)GlDataType.GL_UNSIGNED_BYTE, ktxStructure1.header.glTypeAsUint);

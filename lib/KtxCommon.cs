@@ -9,7 +9,7 @@ namespace KtxSharp
 	public static class Common
 	{
 		/// <summary>
-		/// There is only one valid file identifier for  KTX header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
+		/// There is only one valid file identifier for KTX header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
 		/// </summary>
 		/// <value></value>
 		public static readonly byte[] onlyValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -69,7 +69,7 @@ namespace KtxSharp
 	}
 
 	/// <summary>
-	/// Gl Date type
+	/// Gl Data type
 	/// </summary>
 	public enum GlDataType : uint
 	{

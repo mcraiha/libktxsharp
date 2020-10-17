@@ -111,6 +111,49 @@ namespace KtxSharp
 		/// Metadata dictionary (key is string)
 		/// </summary>
 		public readonly Dictionary<string, MetadataValue> metadataDictionary;
+		
+		/// <summary>
+		/// KtxHeader constructor for 2d texture
+		/// </summary>
+		/// <param name="glDataType">GlDataType</param>
+		/// <param name="glPixelFormat">GlPixelFormat</param>
+		/// <param name="glInternalFormat">GlInternalFormat</param>
+		/// <param name="width">Width</param>
+		/// <param name="height">Height</param>
+		/// <param name="mipmapCount">Mipmap count</param>
+		/// <param name="metadata">Metadata</param>
+		public KtxHeader(GlDataType glDataType, GlPixelFormat glPixelFormat, GlInternalFormat glInternalFormat, uint width, uint height, uint mipmapCount, Dictionary<string, MetadataValue> metadata)
+		{
+			this.isInputLittleEndian = true;
+			
+			this.glDataType = glDataType;
+			this.glTypeAsUint = (uint)this.glDataType;
+
+			this.glTypeSizeAsUint = Common.GlTypeToSize[glDataType];
+
+			this.glFormat = (glDataType != GlDataType.Compressed) ? glPixelFormat : 0;
+			this.glFormatAsUint = (uint)this.glFormat;
+
+			this.glInternalFormat = glInternalFormat;
+			this.glInternalFormatAsUint = (uint)this.glInternalFormat;
+
+			this.glPixelFormat = glPixelFormat;
+			this.glBaseInternalFormatAsUint = (uint)this.glPixelFormat;
+
+			this.pixelWidth = width;
+			this.pixelHeight = height;
+
+			// For 2d textures these values must be 0
+			this.pixelDepth = 0;
+			this.numberOfArrayElements = 0;
+
+			// For non cubemaps this should be 1
+			this.numberOfFaces = 1;
+
+			this.numberOfMipmapLevels = mipmapCount;
+
+			this.metadataDictionary = metadata;
+		}
 
 		/// <summary>
 		/// KtxHeader constructor

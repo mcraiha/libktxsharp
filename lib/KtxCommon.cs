@@ -1,4 +1,5 @@
 using System.Text;
+using System.Collections.Generic;
 
 // Common global values
 namespace KtxSharp
@@ -66,6 +67,22 @@ namespace KtxSharp
 		{
 			return Encoding.UTF8.GetBytes(inputString);
 		}
+
+		/// <summary>
+		/// GlType to size
+		/// </summary>
+		public static readonly Dictionary<GlDataType, uint> GlTypeToSize = new Dictionary<GlDataType, uint>()
+		{
+			{ GlDataType.Compressed, 1 },
+			{ GlDataType.GL_BYTE, 1 },
+			{ GlDataType.GL_UNSIGNED_BYTE, 1 },
+
+			{ GlDataType.GL_SHORT, 2 },
+			{ GlDataType.GL_UNSIGNED_SHORT, 2 },
+
+			{ GlDataType.GL_FLOAT, 4 },
+			{ GlDataType.GL_FIXED, 4 }
+		};
 	}
 
 	/// <summary>

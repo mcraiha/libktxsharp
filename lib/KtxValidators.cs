@@ -40,6 +40,33 @@ namespace KtxSharp
 		}
 
 		/// <summary>
+		/// Validate identifier
+		/// </summary>
+		/// <param name="stream">Stream for reading</param>
+		/// <returns>Tuple that tells if stream has valid identifier, and possible error</returns>
+		public static (bool isValid, string possibleError) ValidateIdentifier(Stream stream)
+		{
+			try
+			{
+				using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
+				{
+					byte[] tempIdentifier = reader.ReadBytes(Common.onlyValidIdentifier.Length);
+
+					if (!Common.onlyValidIdentifier.SequenceEqual(tempIdentifier))
+					{
+						return (isValid: false, possibleError: "Identifier does not match requirements!");
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				return (isValid: false, e.ToString());
+			}
+
+			return (isValid: true, possibleError: "");
+		}
+
+		/// <summary>
 		/// Validate header data
 		/// </summary>
 		/// <param name="stream">Stream for reading</param>
@@ -52,13 +79,6 @@ namespace KtxSharp
 				using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 				{
 					// Start validating header
-					byte[] tempIdentifier = reader.ReadBytes(Common.onlyValidIdentifier.Length);
-
-					if (!Common.onlyValidIdentifier.SequenceEqual(tempIdentifier))
-					{
-						return (isValid: false, possibleError: "Identifier does not match requirements!");
-					}
-
 					uint tempEndian = reader.ReadUInt32();
 
 					if (Common.expectedEndianValue != tempEndian && Common.otherValidEndianValue != tempEndian)

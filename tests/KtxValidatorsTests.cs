@@ -38,6 +38,23 @@ namespace Tests
 		}
 
 		[Test]
+		public void KtxHeaderGenerationValidation()
+		{
+			// Arrange
+			KtxHeader header = new KtxHeader(GlDataType.Compressed, GlPixelFormat.GL_RGBA, GlInternalFormat.GL_COMPRESSED_RGBA_ASTC_10x10_KHR, 256, 256, 1, new System.Collections.Generic.Dictionary<string, MetadataValue>());
+
+			// Act
+			MemoryStream ms1 = new MemoryStream();
+			header.WriteTo(ms1);
+			MemoryStream ms2 = new MemoryStream(ms1.ToArray());
+			(bool valid, string possibleError) = KtxValidators.ValidateHeaderData(ms2);
+
+			// Assert
+			Assert.IsTrue(valid);
+			Assert.IsTrue(string.IsNullOrEmpty(possibleError));
+		}
+
+		[Test]
 		public void Test1()
 		{
 			// Arrange

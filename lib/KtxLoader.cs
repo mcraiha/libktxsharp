@@ -26,6 +26,12 @@ namespace KtxSharp
             // We have to duplicate the data, since we have to both validate it and keep it for texture data validation step
             long streamPos = stream.Position;
 
+            (bool isIdentifierValid, string possibleIdentifierError) = KtxValidators.ValidateIdentifier(stream);
+            if (!isIdentifierValid)
+            {
+                return (isValid: false, possibleError: possibleIdentifierError);
+            }
+
             (bool isHeaderValid, string possibleHeaderError) = KtxValidators.ValidateHeaderData(stream);
             if (!isHeaderValid)
             {

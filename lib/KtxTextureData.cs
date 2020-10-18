@@ -34,6 +34,22 @@ namespace KtxSharp
 		/// <summary>
 		/// Constructor for texture data
 		/// </summary>
+		/// <param name="textureDatas">List of 2d texture bytes, one for each mipmap level</param>
+		public KtxTextureData(List<byte[]> textureDatas)
+		{
+			if (textureDatas == null || textureDatas.Count < 1)
+			{
+				throw new ArgumentException("Texturedatas must contain something");
+			}
+
+			this.textureDataOfMipmapLevel = textureDatas;
+
+			this.textureType = this.textureDataOfMipmapLevel.Count > 1 ? TextureTypeBasic.Basic2DWithMipmaps : TextureTypeBasic.Basic2DNoMipmaps;
+		}
+
+		/// <summary>
+		/// Constructor for texture data
+		/// </summary>
 		/// <param name="header">Header</param>
 		/// <param name="stream">Stream for reading</param>
 		public KtxTextureData(KtxHeader header, Stream stream)

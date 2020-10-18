@@ -16,6 +16,7 @@ namespace Tests
 			byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validSample2Filename);
 			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
+			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 
 			// Act
 			bool wasTest1Valid = false;
@@ -46,20 +47,30 @@ namespace Tests
 				(wasTest4Valid, test4PossibleError) = KtxLoader.CheckIfInputIsValid(ms4);
 			}
 
+			bool wasTest5Valid = false;
+			string test5PossibleError = "";
+			using (MemoryStream ms5 = new MemoryStream(inputBytes5))
+			{
+				(wasTest5Valid, test5PossibleError) = KtxLoader.CheckIfInputIsValid(ms5);
+			}
+
 			// Assert
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
 
 			Assert.IsTrue(wasTest1Valid);
 			Assert.IsTrue(wasTest2Valid);
 			Assert.IsTrue(wasTest3Valid);
 			Assert.IsTrue(wasTest4Valid);
+			Assert.IsTrue(wasTest5Valid);
 
 			Assert.AreEqual("", test1PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test2PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test3PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test4PossibleError, "There should NOT be any errors");
+			Assert.AreEqual("", test5PossibleError, "There should NOT be any errors");
 		}
 
 		[Test]
@@ -92,6 +103,7 @@ namespace Tests
 			byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validSample2Filename);
 			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
+			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 
 			// Act
 			KtxStructure ktxStructure1 = null;
@@ -116,6 +128,12 @@ namespace Tests
 			using (MemoryStream ms4 = new MemoryStream(inputBytes4))
 			{
 				ktxStructure4 = KtxLoader.LoadInput(ms4);
+			}
+
+			KtxStructure ktxStructure5 = null;
+			using (MemoryStream ms5 = new MemoryStream(inputBytes5))
+			{
+				ktxStructure5 = KtxLoader.LoadInput(ms5);
 			}
 
 			// Assert
@@ -174,6 +192,16 @@ namespace Tests
 			Assert.IsTrue(ktxStructure4.header.metadataDictionary.ContainsKey("api"));
 			Assert.IsTrue(ktxStructure4.header.metadataDictionary["api"].isString);
 			Assert.AreEqual("joke2", ktxStructure4.header.metadataDictionary["api"].stringValue);
+
+			// etc2-rgba8.ktx resolution
+			Assert.AreEqual(128, ktxStructure5.header.pixelWidth);
+			Assert.AreEqual(128, ktxStructure5.header.pixelHeight);
+
+			// etc2-rgba8.ktx Data type and internal format
+			Assert.AreEqual(GlDataType.Compressed, ktxStructure5.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure5.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_COMPRESSED_RGBA8_ETC2_EAC, ktxStructure5.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_COMPRESSED_RGBA8_ETC2_EAC, ktxStructure5.header.glInternalFormatAsUint);
 		}
 	}
 }

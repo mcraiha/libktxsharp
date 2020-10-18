@@ -21,6 +21,7 @@
     <None Update="16x16_colors_PVRTexTool.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="testimage_SIGNED_R11_EAC.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="ktx_specs.ktx" CopyToOutputDirectory="PreserveNewest" />
+	  <None Update="etc2-rgba8.ktx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

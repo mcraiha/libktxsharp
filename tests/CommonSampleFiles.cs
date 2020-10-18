@@ -24,5 +24,10 @@ namespace Tests
 		/// Fourth sample file is filled (missing parts filled with zeroes) from KTX specifications https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/#4
 		/// </summary>
 		public static readonly string validSample4Filename = "ktx_specs.ktx";
+
+		/// <summary>
+		/// Fifth sample file is from Khronos GitHub repo https://github.com/KhronosGroup/KTX-Software/tree/master/tests/testimages 
+		/// </summary>
+		public static readonly string validSample5Filename = "etc2-rgba8.ktx";
 	}
 }

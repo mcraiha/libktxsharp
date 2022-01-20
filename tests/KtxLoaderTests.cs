@@ -140,6 +140,7 @@ namespace Tests
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
 
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);

@@ -24,7 +24,7 @@ Console.WriteLine(ktxStructure.header.pixelWidth);
 
 ## How do I build this
 ### Requirements
-Dotnet core 2.0 environment
+Dotnet core 2.0 (or newer) environment
 
 ### Build .dll
 Move to lib folder and run

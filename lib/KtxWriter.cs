@@ -9,11 +9,33 @@ namespace KtxSharp
     public static class KtxWriter
     {
         /// <summary>
+        /// Should writer override endianness
+        /// </summary>
+        public enum OverrideEndianness
+        {
+            /// <summary>
+            /// Keep same endianness as input had
+            /// </summary>
+            KeepSame = 0,
+
+            /// <summary>
+            /// Write little endian
+            /// </summary>
+            WriteLittleEndian,
+
+            /// <summary>
+            /// Write big endian
+            /// </summary>
+            WriteBigEndian
+        }
+
+        /// <summary>
         /// Write KtxStructure to output stream
         /// </summary>
         /// <param name="structure">KtxStructure</param>
         /// <param name="output">Output stream</param>
-        public static void WriteTo(KtxStructure structure, Stream output)
+        /// <param name="overrideEndianness">Override endianness (optional)</param>
+        public static void WriteTo(KtxStructure structure, Stream output, OverrideEndianness overrideEndianness = OverrideEndianness.KeepSame)
         {
             if (structure == null)
             {

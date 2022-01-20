@@ -148,6 +148,7 @@ namespace Tests
 			// Compressonator sample file format
 			Assert.AreEqual(GlPixelFormat.GL_RGBA, ktxStructure1.header.glFormat);
 			Assert.AreEqual((uint)GlPixelFormat.GL_RGBA, ktxStructure1.header.glFormatAsUint);
+			Assert.IsTrue(ktxStructure1.header.isInputLittleEndian);
 
 			// Compressonator sample file Data type and internal format
 			Assert.AreEqual(GlDataType.GL_UNSIGNED_BYTE, ktxStructure1.header.glDataType);
@@ -159,6 +160,9 @@ namespace Tests
 			// PVRTexTool sample file resolution
 			Assert.AreEqual(16, ktxStructure2.header.pixelWidth);
 			Assert.AreEqual(16, ktxStructure2.header.pixelHeight);
+
+			// PVRTexTool sample file format
+			Assert.IsTrue(ktxStructure2.header.isInputLittleEndian);
 
 			// PVRTexTool sample file Data type and internal format
 			Assert.AreEqual(GlDataType.GL_UNSIGNED_BYTE, ktxStructure2.header.glDataType);
@@ -186,6 +190,7 @@ namespace Tests
 			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure4.header.glTypeAsUint);
 			Assert.AreEqual(GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure4.header.glInternalFormat);
 			Assert.AreEqual((uint)GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure4.header.glInternalFormatAsUint);
+			Assert.IsFalse(ktxStructure4.header.isInputLittleEndian);
 			
 			// ktx_specs.ktx Metadata
 			Assert.AreEqual(1, ktxStructure4.header.metadataDictionary.Count);

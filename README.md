@@ -56,8 +56,10 @@ dotnet test
 * Basic KTX read functionality
 * Some test cases
 
-## What is missing
+## What is partially in
 * KTX write support
+
+## What is missing
 * Nuget
 * More files for testing
 * Benchmarks

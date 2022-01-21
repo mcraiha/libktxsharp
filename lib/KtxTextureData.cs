@@ -132,16 +132,33 @@ namespace KtxSharp
 		/// Write content to stream. Leaves stream open
 		/// </summary>
 		/// <param name="output">Output stream</param>
-		public void WriteTo(Stream output)
+		/// <param name="writeLittleEndian">Write little endian output (default enabled)</param>
+		public void WriteTo(Stream output, bool writeLittleEndian = true)
 		{
 			using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8, leaveOpen: true))
 			{
-				foreach (byte[] level in this.textureDataOfMipmapLevel)
+				Action<uint> writeUint = writer.Write;
+				if (!writeLittleEndian)
 				{
-					writer.Write((uint)level.Length);
-					writer.Write(level);
+					writeUint = (uint u) => WriteUintAsBigEndian(writer, u);
 				}
+
+				GenericWrite(this.textureDataOfMipmapLevel, writeUint, writer.Write);
 			}
+		}
+
+		private static void GenericWrite(List<byte[]> textureDataOfMipmapLevel, Action<uint> writeUint, Action<byte[]> writeByteArray)
+		{
+			foreach (byte[] level in textureDataOfMipmapLevel)
+			{
+				writeUint((uint)level.Length);
+				writeByteArray(level);
+			}
+		}
+
+		private static void WriteUintAsBigEndian(BinaryWriter writer, uint value)
+		{
+			writer.Write(KtxBitFiddling.SwapEndian(value));
 		}
 	}
 }

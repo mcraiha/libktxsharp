@@ -51,9 +51,19 @@ namespace KtxSharp
                 throw new ArgumentException("Output stream must be writable");
             }
 
+            bool writeLittleEndian = true;
+            if (overrideEndianness == OverrideEndianness.KeepSame)
+            {
+                writeLittleEndian = structure.header.isInputLittleEndian;
+            }
+            else if (overrideEndianness == OverrideEndianness.WriteBigEndian)
+            {
+                writeLittleEndian = false;
+            }
+
             output.Write(Common.onlyValidIdentifier, 0, Common.onlyValidIdentifier.Length);
-            structure.header.WriteTo(output);
-            structure.textureData.WriteTo(output);
+            structure.header.WriteTo(output, writeLittleEndian);
+            structure.textureData.WriteTo(output, writeLittleEndian);
         }
     }
 }

@@ -14,15 +14,18 @@ namespace Tests
 			byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);
 			byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validSample2Filename);
 			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
+			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
 
 			MemoryStream msWriter1 = new MemoryStream();
 			MemoryStream msWriter2 = new MemoryStream();
 			MemoryStream msWriter3 = new MemoryStream();
+			MemoryStream msWriter4 = new MemoryStream();
 
 			// Act
 			KtxStructure ktxStructure1 = null;
 			KtxStructure ktxStructure2 = null;
 			KtxStructure ktxStructure3 = null;
+			KtxStructure ktxStructure4 = null;
 
 			using (MemoryStream msReader = new MemoryStream(inputBytes1))
 			{
@@ -39,14 +42,21 @@ namespace Tests
 				ktxStructure3 = KtxLoader.LoadInput(msReader);
 			}
 
+			using (MemoryStream msReader = new MemoryStream(inputBytes4))
+			{
+				ktxStructure4 = KtxLoader.LoadInput(msReader);
+			}
+
 			KtxWriter.WriteTo(ktxStructure1, msWriter1);
 			KtxWriter.WriteTo(ktxStructure2, msWriter2);
 			KtxWriter.WriteTo(ktxStructure3, msWriter3);
+			KtxWriter.WriteTo(ktxStructure4, msWriter4);
 
 			// Assert
 			CollectionAssert.AreEqual(inputBytes1, msWriter1.ToArray());
 			CollectionAssert.AreEqual(inputBytes2, msWriter2.ToArray());
 			CollectionAssert.AreEqual(inputBytes3, msWriter3.ToArray());
+			CollectionAssert.AreEqual(inputBytes4, msWriter4.ToArray());
 		}
 
 		[Test]

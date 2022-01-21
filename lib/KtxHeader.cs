@@ -261,45 +261,61 @@ namespace KtxSharp
 		/// Write content to stream. Leaves stream open
 		/// </summary>
 		/// <param name="output">Output stream</param>
-		public void WriteTo(Stream output)
+		/// <param name="writeLittleEndian">Write little endian output (default enabled)</param>
+		public void WriteTo(Stream output, bool writeLittleEndian = true)
 		{
 			using (BinaryWriter writer = new BinaryWriter(output, Encoding.UTF8, leaveOpen: true))
 			{
-				writer.Write(Common.expectedEndianValue);
-				writer.Write(this.glTypeAsUint);
-				writer.Write(this.glTypeSizeAsUint);
-				writer.Write(this.glFormatAsUint);
-				writer.Write(this.glInternalFormatAsUint);
-				writer.Write(this.glBaseInternalFormatAsUint);
-				writer.Write(this.pixelWidth);
-				writer.Write(this.pixelHeight);
-				writer.Write(this.pixelDepth);
-				writer.Write(this.numberOfArrayElements);
-				writer.Write(this.numberOfFaces);
-				writer.Write(this.numberOfMipmapLevels);
-				writer.Write(GetTotalSizeOfMetadata(this.metadataDictionary));
-				foreach (var pair in this.metadataDictionary)
+				Action<uint> writeUint = writer.Write;
+				if (!writeLittleEndian)
 				{
-					uint keyLenght = Common.GetLengthOfUtf8StringAsBytes(pair.Key) + 1;
-					uint valueLength = pair.Value.GetSizeInBytes();
-					uint totalLength = keyLenght + valueLength;
-					writer.Write(totalLength);
-					writer.Write(Common.GetUtf8StringAsBytes(pair.Key));
-					writer.Write(Common.nulByte);
-					writer.Write(pair.Value.GetAsBytes());
-					if (pair.Value.isString)
-					{
-						writer.Write(Common.nulByte);
-					}
+					writeUint = (uint u) => WriteUintAsBigEndian(writer, u);
+				}
+				GenericWrite(this, writeUint, writer.Write, writer.Write);
+			}
+		}
 
-					// Write padding if needed
-					while (totalLength % 4 != 0)
-					{
-						writer.Write(Common.nulByte);
-						totalLength++;
-					}
+		private static void GenericWrite(KtxHeader header, Action<uint> writeUint, Action<byte> writeByte, Action<byte[]> writeByteArray)
+		{
+			writeUint(Common.expectedEndianValue);
+			writeUint(header.glTypeAsUint);
+			writeUint(header.glTypeSizeAsUint);
+			writeUint(header.glFormatAsUint);
+			writeUint(header.glInternalFormatAsUint);
+			writeUint(header.glBaseInternalFormatAsUint);
+			writeUint(header.pixelWidth);
+			writeUint(header.pixelHeight);
+			writeUint(header.pixelDepth);
+			writeUint(header.numberOfArrayElements);
+			writeUint(header.numberOfFaces);
+			writeUint(header.numberOfMipmapLevels);
+			writeUint(GetTotalSizeOfMetadata(header.metadataDictionary));
+			foreach (var pair in header.metadataDictionary)
+			{
+				uint keyLenght = Common.GetLengthOfUtf8StringAsBytes(pair.Key) + 1;
+				uint valueLength = pair.Value.GetSizeInBytes();
+				uint totalLength = keyLenght + valueLength;
+				writeUint(totalLength);
+				writeByteArray(Common.GetUtf8StringAsBytes(pair.Key));
+				writeByte(Common.nulByte);
+				writeByteArray(pair.Value.GetAsBytes());
+				if (pair.Value.isString)
+				{
+					writeByte(Common.nulByte);
+				}
+
+				// Write padding if needed
+				while (totalLength % 4 != 0)
+				{
+					writeByte(Common.nulByte);
+					totalLength++;
 				}
 			}
+		}
+
+		private static void WriteUintAsBigEndian(BinaryWriter writer, uint value)
+		{
+			writer.Write(KtxBitFiddling.SwapEndian(value));
 		}
 
 		#region Parse metadata

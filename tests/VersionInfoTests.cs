@@ -3,12 +3,12 @@ using KtxSharp;
 
 namespace Tests
 {
-    public class VersionInfoTests
-    {
-        [Test]
-        public void GetVersionTest()
-        {
-            // Arrange
+	public class VersionInfoTests
+	{
+		[Test]
+		public void GetVersionTest()
+		{
+			// Arrange
 			
 			// Act
 			string version = VersionInfo.GetVersion();
@@ -16,6 +16,6 @@ namespace Tests
 			// Assert
 			Assert.IsNotNull(version);
 			Assert.Greater(version.Length, 1);
-        }
-    }
+		}
+	}
 }

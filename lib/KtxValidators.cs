@@ -54,6 +54,11 @@ namespace KtxSharp
 
 					if (!Common.onlyValidIdentifier.SequenceEqual(tempIdentifier))
 					{
+						if (Common.ktx2ValidIdentifier.SequenceEqual(tempIdentifier))
+						{
+							return (isValid: false, possibleError: "KTX version 2 is not supported!");
+						}
+
 						return (isValid: false, possibleError: "Identifier does not match requirements!");
 					}
 				}

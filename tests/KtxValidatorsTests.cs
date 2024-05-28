@@ -54,15 +54,35 @@ namespace Tests
 			Assert.IsTrue(string.IsNullOrEmpty(possibleError));
 		}
 
-		[Test]
-		public void Test1()
+		[Test, Description("KTX2 identifier test support")]
+		public void Ktx2IdentifierTest()
 		{
 			// Arrange
+			byte[] bytes = new byte[] 
+			{ 
+				// Sample data from https://github.khronos.org/KTX-Specification/ktxspec.v2.html
+				0xAB, 0x4B, 0x54, 0x58, // first four bytes of Byte[12] identifier
+				0x20, 0x32, 0x30, 0xBB, // next four bytes of Byte[12] identifier
+				0x0D, 0x0A, 0x1A, 0x0A, // final four bytes of Byte[12] identifier
+				0x00, 0x00, 0x00, 0x00, // UInt32 vkFormat = VK_FORMAT_UNDEFINED (0)
+				0x01, 0x00, 0x00, 0x00, // UInt32 typeSize = 1
+				0x08, 0x00, 0x00, 0x00, // UInt32 pixelWidth = 8
+				0x08, 0x00, 0x00, 0x00, // UInt32 pixelHeight = 8
+				0x00, 0x00, 0x00, 0x00, // UInt32 pixelDepth = 0
+				0x00, 0x00, 0x00, 0x00, // UInt32 layerCount = 0
+				0x01, 0x00, 0x00, 0x00, // UInt32 faceCount = 0
+				0x01, 0x00, 0x00, 0x00, // UInt32 levelCount = 0
+				0x01, 0x00, 0x00, 0x00, // UInt32 supercompressionScheme = 1 (BASISLZ)
+			};
+
+			MemoryStream ktx2Header = new MemoryStream(bytes);
 
 			// Act
+			var kt2ContentError = KtxValidators.ValidateIdentifier(ktx2Header);
 
 			// Assert
-			
+			Assert.IsFalse(kt2ContentError.isValid);
+			Assert.IsTrue(kt2ContentError.possibleError.Contains("KTX version 2"));
 		}
 	}
 }

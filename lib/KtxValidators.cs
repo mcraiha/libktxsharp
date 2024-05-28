@@ -12,7 +12,7 @@ namespace KtxSharp
 	public static class KtxValidators
 	{
 		// There must be at least 64 bytes of input
-        private static readonly int minInputSizeInBytes = 64;
+		private static readonly int minInputSizeInBytes = 64;
 
 		/// <summary>
 		/// Generic stream validation
@@ -27,14 +27,14 @@ namespace KtxSharp
 			}
 
 			if (!stream.CanRead)
-            {
-                return (isValid: false, possibleError: "Stream is not readable!");
-            }
+			{
+				return (isValid: false, possibleError: "Stream is not readable!");
+			}
 
 			if (stream.Length < minInputSizeInBytes)
-            {
-                return (isValid: false, possibleError: $"KTX input should have at least { minInputSizeInBytes } bytes!");
-            }
+			{
+				return (isValid: false, possibleError: $"KTX input should have at least { minInputSizeInBytes } bytes!");
+			}
 
 			return (isValid: true, possibleError: "");
 		}

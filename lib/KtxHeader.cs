@@ -187,7 +187,7 @@ namespace KtxSharp
 			bool shouldSwapEndianness = (this.endiannessValue != Common.expectedEndianValue);
 
 			// Use the stream in a binary reader.
-            using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
+			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
 				// Swap endianness for every KTX variable if needed
 				

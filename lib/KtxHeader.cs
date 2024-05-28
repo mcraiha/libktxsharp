@@ -175,7 +175,7 @@ namespace KtxSharp
 
 			if (!Common.littleEndianAsBytes.SequenceEqual(endiannessBytes) && !Common.bigEndianAsBytes.SequenceEqual(endiannessBytes))
 			{
-				throw new InvalidOperationException("Endianness info in header is not valid!");
+				throw new InvalidOperationException("Endianness info in header is not valid! You can use ValidateIdentifier method to check that you have supported KTX file.");
 			}
 
 			this.isInputLittleEndian = Common.littleEndianAsBytes.SequenceEqual(endiannessBytes);

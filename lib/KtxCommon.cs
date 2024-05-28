@@ -10,10 +10,15 @@ namespace KtxSharp
 	public static class Common
 	{
 		/// <summary>
-		/// There is only one valid file identifier for KTX header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
+		/// There is only one valid file identifier for KTX 1 header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
 		/// </summary>
 		/// <value></value>
 		public static readonly byte[] onlyValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
+
+		/// <summary>
+		/// KTX 2 format is not supported, but it is needed for better error message
+		/// </summary>
+		public static readonly byte[] ktx2ValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
 
 		/// <summary>
 		/// Expected Endian value
@@ -469,5 +474,4 @@ namespace KtxSharp
 		/// </summary>
 		Basic1DWithMipmaps = 6,
 	}
-	
 }

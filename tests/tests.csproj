@@ -21,8 +21,9 @@
     <None Update="16x16_colors_PVRTexTool.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="testimage_SIGNED_R11_EAC.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="ktx_specs.ktx" CopyToOutputDirectory="PreserveNewest" />
-	  <None Update="etc2-rgba8.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="etc2-rgba8.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="smiling_etc_64x64_Compressonator.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="smiling_ATC_RGBA_Explicit.ktx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

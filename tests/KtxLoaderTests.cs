@@ -18,6 +18,7 @@ namespace Tests
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
+			byte[] inputBytes7 = File.ReadAllBytes(CommonFiles.validSample7Filename);
 
 			// Act
 			bool wasTest1Valid = false;
@@ -62,12 +63,20 @@ namespace Tests
 				(wasTest6Valid, test6PossibleError) = KtxLoader.CheckIfInputIsValid(ms6);
 			}
 
+			bool wasTest7Valid = false;
+			string test7PossibleError = "";
+			using (MemoryStream ms7 = new MemoryStream(inputBytes7))
+			{
+				(wasTest7Valid, test7PossibleError) = KtxLoader.CheckIfInputIsValid(ms7);
+			}
+
 			// Assert
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes7, "Input files should NOT have equal content");
 
 			Assert.IsTrue(wasTest1Valid);
 			Assert.IsTrue(wasTest2Valid);
@@ -75,6 +84,7 @@ namespace Tests
 			Assert.IsTrue(wasTest4Valid);
 			Assert.IsTrue(wasTest5Valid);
 			Assert.IsTrue(wasTest6Valid);
+			Assert.IsTrue(wasTest7Valid);
 
 			Assert.AreEqual("", test1PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test2PossibleError, "There should NOT be any errors");
@@ -82,6 +92,7 @@ namespace Tests
 			Assert.AreEqual("", test4PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test5PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test6PossibleError, "There should NOT be any errors");
+			Assert.AreEqual("", test7PossibleError, "There should NOT be any errors");
 		}
 
 		[Test]
@@ -116,6 +127,7 @@ namespace Tests
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
+			byte[] inputBytes7 = File.ReadAllBytes(CommonFiles.validSample7Filename);
 
 			// Act
 			KtxStructure ktxStructure1 = null;
@@ -154,12 +166,19 @@ namespace Tests
 				ktxStructure6 = KtxLoader.LoadInput(ms6);
 			}
 
+			KtxStructure ktxStructure7 = null;
+			using (MemoryStream ms7 = new MemoryStream(inputBytes7))
+			{
+				ktxStructure7 = KtxLoader.LoadInput(ms7);
+			}
+
 			// Assert
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes7, "Input files should NOT have equal content");
 
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);
@@ -237,6 +256,16 @@ namespace Tests
 			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure6.header.glTypeAsUint);
 			Assert.AreEqual(GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure6.header.glInternalFormat);
 			Assert.AreEqual((uint)GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure6.header.glInternalFormatAsUint);
+
+			// smiling_ATC_RGBA_Explicit.ktx resolution
+			Assert.AreEqual(64, ktxStructure7.header.pixelWidth);
+			Assert.AreEqual(64, ktxStructure7.header.pixelHeight);
+
+			// smiling_ATC_RGBA_Explicit.ktx Data type and internal format
+			Assert.AreEqual(GlDataType.Compressed, ktxStructure7.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure7.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD, ktxStructure7.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD, ktxStructure7.header.glInternalFormatAsUint);
 		}
 	}
 }

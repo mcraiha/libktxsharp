@@ -238,6 +238,21 @@ namespace KtxSharp
 		GL_COMPRESSED_RGBA_S3TC_DXT5_EXT = 0x83F3,
 
 		/// <summary>
+		/// RGB ATC
+		/// </summary>
+		GL_ATC_RGB_AMD = 0x8C92,
+
+		/// <summary>
+		/// RGBA ATC Explicit Alpha
+		/// </summary>
+   		GL_ATC_RGBA_EXPLICIT_ALPHA_AMD = 0x8C93,
+
+		/// <summary>
+		/// RGBA ATC Interpolated Alpha
+		/// </summary>
+  		GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD = 0x87EE,
+
+		/// <summary>
 		/// ETC1 RGB8
 		/// </summary>
 		GL_ETC1_RGB8_OES = 0x8D64,

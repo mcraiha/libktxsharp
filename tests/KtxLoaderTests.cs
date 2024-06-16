@@ -17,6 +17,7 @@ namespace Tests
 			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
+			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
 
 			// Act
 			bool wasTest1Valid = false;
@@ -54,23 +55,33 @@ namespace Tests
 				(wasTest5Valid, test5PossibleError) = KtxLoader.CheckIfInputIsValid(ms5);
 			}
 
+			bool wasTest6Valid = false;
+			string test6PossibleError = "";
+			using (MemoryStream ms6 = new MemoryStream(inputBytes6))
+			{
+				(wasTest6Valid, test6PossibleError) = KtxLoader.CheckIfInputIsValid(ms6);
+			}
+
 			// Assert
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
 
 			Assert.IsTrue(wasTest1Valid);
 			Assert.IsTrue(wasTest2Valid);
 			Assert.IsTrue(wasTest3Valid);
 			Assert.IsTrue(wasTest4Valid);
 			Assert.IsTrue(wasTest5Valid);
+			Assert.IsTrue(wasTest6Valid);
 
 			Assert.AreEqual("", test1PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test2PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test3PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test4PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test5PossibleError, "There should NOT be any errors");
+			Assert.AreEqual("", test6PossibleError, "There should NOT be any errors");
 		}
 
 		[Test]
@@ -104,6 +115,7 @@ namespace Tests
 			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
 			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
+			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
 
 			// Act
 			KtxStructure ktxStructure1 = null;
@@ -136,11 +148,18 @@ namespace Tests
 				ktxStructure5 = KtxLoader.LoadInput(ms5);
 			}
 
+			KtxStructure ktxStructure6 = null;
+			using (MemoryStream ms6 = new MemoryStream(inputBytes6))
+			{
+				ktxStructure6 = KtxLoader.LoadInput(ms6);
+			}
+
 			// Assert
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
 			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
+			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
 
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);
@@ -208,6 +227,16 @@ namespace Tests
 			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure5.header.glTypeAsUint);
 			Assert.AreEqual(GlInternalFormat.GL_COMPRESSED_RGBA8_ETC2_EAC, ktxStructure5.header.glInternalFormat);
 			Assert.AreEqual((uint)GlInternalFormat.GL_COMPRESSED_RGBA8_ETC2_EAC, ktxStructure5.header.glInternalFormatAsUint);
+
+			// smiling_etc_64x64_Compressonator.ktx resolution
+			Assert.AreEqual(64, ktxStructure6.header.pixelWidth);
+			Assert.AreEqual(64, ktxStructure6.header.pixelHeight);
+
+			// smiling_etc_64x64_Compressonator.ktx Data type and internal format
+			Assert.AreEqual(GlDataType.Compressed, ktxStructure6.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure6.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure6.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_ETC1_RGB8_OES, ktxStructure6.header.glInternalFormatAsUint);
 		}
 	}
 }

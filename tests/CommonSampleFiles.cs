@@ -29,5 +29,10 @@ namespace Tests
 		/// Fifth sample file is from Khronos GitHub repo https://github.com/KhronosGroup/KTX-Software/tree/master/tests/testimages 
 		/// </summary>
 		public static readonly string validSample5Filename = "etc2-rgba8.ktx";
+
+		/// <summary>
+		/// Sixth sample file is created with Compressonator https://github.com/GPUOpen-Tools/Compressonator
+		/// </summary>
+		public static readonly string validSample6Filename = "smiling_etc_64x64_Compressonator.ktx";
 	}
 }

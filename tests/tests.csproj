@@ -24,6 +24,7 @@
     <None Update="etc2-rgba8.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="smiling_etc_64x64_Compressonator.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="smiling_ATC_RGBA_Explicit.ktx" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="format_pvrtc1_4bpp_unorm.ktx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

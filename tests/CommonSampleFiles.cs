@@ -39,5 +39,10 @@ namespace Tests
 		/// Seventh sample file is created with Compressonator https://github.com/GPUOpen-Tools/Compressonator
 		/// </summary>
 		public static readonly string validSample7Filename = "smiling_ATC_RGBA_Explicit.ktx";
+
+		/// <summary>
+		/// Eight sample file is from ktxtest GitHub repo https://github.com/sevmeyer/ktxtest
+		/// </summary>
+		public static readonly string validSample8Filename = "format_pvrtc1_4bpp_unorm.ktx";
 	}
 }

@@ -238,6 +238,26 @@ namespace KtxSharp
 		GL_COMPRESSED_RGBA_S3TC_DXT5_EXT = 0x83F3,
 
 		/// <summary>
+		/// RGB PVRTC 4BPP V1
+		/// </summary>
+		GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG = 0x8C00,
+
+		/// <summary>
+		/// RGB PVRTC 2BPP V1
+		/// </summary>
+		GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG = 0x8C01,
+
+		/// <summary>
+		/// RGBA PVRTC 4BPP V1
+		/// </summary>
+		GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG = 0x8C02,
+
+		/// <summary>
+		/// RGBA PVRTC 2BPP V1
+		/// </summary>
+		GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG = 0x8C03,
+
+		/// <summary>
 		/// RGB ATC
 		/// </summary>
 		GL_ATC_RGB_AMD = 0x8C92,

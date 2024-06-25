@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using KtxSharp;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -19,6 +20,7 @@ namespace Tests
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
 			byte[] inputBytes7 = File.ReadAllBytes(CommonFiles.validSample7Filename);
+			byte[] inputBytes8 = File.ReadAllBytes(CommonFiles.validSample8Filename);
 
 			// Act
 			bool wasTest1Valid = false;
@@ -70,13 +72,16 @@ namespace Tests
 				(wasTest7Valid, test7PossibleError) = KtxLoader.CheckIfInputIsValid(ms7);
 			}
 
+			bool wasTest8Valid = false;
+			string test8PossibleError = "";
+			using (MemoryStream ms8 = new MemoryStream(inputBytes8))
+			{
+				(wasTest8Valid, test8PossibleError) = KtxLoader.CheckIfInputIsValid(ms8);
+			}
+
 			// Assert
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes7, "Input files should NOT have equal content");
+			var allFiles = new List<byte[]>() { inputBytes1, inputBytes2, inputBytes3, inputBytes4, inputBytes5, inputBytes6, inputBytes7, inputBytes8 };
+			CollectionAssert.AllItemsAreUnique(allFiles, "All input should be unique");
 
 			Assert.IsTrue(wasTest1Valid);
 			Assert.IsTrue(wasTest2Valid);
@@ -85,6 +90,7 @@ namespace Tests
 			Assert.IsTrue(wasTest5Valid);
 			Assert.IsTrue(wasTest6Valid);
 			Assert.IsTrue(wasTest7Valid);
+			Assert.IsTrue(wasTest8Valid);
 
 			Assert.AreEqual("", test1PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test2PossibleError, "There should NOT be any errors");
@@ -93,6 +99,7 @@ namespace Tests
 			Assert.AreEqual("", test5PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test6PossibleError, "There should NOT be any errors");
 			Assert.AreEqual("", test7PossibleError, "There should NOT be any errors");
+			Assert.AreEqual("", test8PossibleError, "There should NOT be any errors");
 		}
 
 		[Test]
@@ -128,6 +135,7 @@ namespace Tests
 			byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validSample5Filename);
 			byte[] inputBytes6 = File.ReadAllBytes(CommonFiles.validSample6Filename);
 			byte[] inputBytes7 = File.ReadAllBytes(CommonFiles.validSample7Filename);
+			byte[] inputBytes8 = File.ReadAllBytes(CommonFiles.validSample8Filename);
 
 			// Act
 			KtxStructure ktxStructure1 = null;
@@ -172,13 +180,15 @@ namespace Tests
 				ktxStructure7 = KtxLoader.LoadInput(ms7);
 			}
 
+			KtxStructure ktxStructure8 = null;
+			using (MemoryStream ms8 = new MemoryStream(inputBytes8))
+			{
+				ktxStructure8 = KtxLoader.LoadInput(ms8);
+			}
+
 			// Assert
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes2, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes3, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes4, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes5, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes6, "Input files should NOT have equal content");
-			CollectionAssert.AreNotEqual(inputBytes1, inputBytes7, "Input files should NOT have equal content");
+			var allFiles = new List<byte[]>() { inputBytes1, inputBytes2, inputBytes3, inputBytes4, inputBytes5, inputBytes6, inputBytes7, inputBytes8 };
+			CollectionAssert.AllItemsAreUnique(allFiles, "All input should be unique");
 
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);
@@ -266,6 +276,16 @@ namespace Tests
 			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure7.header.glTypeAsUint);
 			Assert.AreEqual(GlInternalFormat.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD, ktxStructure7.header.glInternalFormat);
 			Assert.AreEqual((uint)GlInternalFormat.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD, ktxStructure7.header.glInternalFormatAsUint);
+
+			// format_pvrtc1_4bpp_unorm.ktx resolution
+			Assert.AreEqual(64, ktxStructure8.header.pixelWidth);
+			Assert.AreEqual(64, ktxStructure8.header.pixelHeight);
+
+			// format_pvrtc1_4bpp_unorm.ktx Data type and internal format
+			Assert.AreEqual(GlDataType.Compressed, ktxStructure8.header.glDataType);
+			Assert.AreEqual((uint)GlDataType.Compressed, ktxStructure8.header.glTypeAsUint);
+			Assert.AreEqual(GlInternalFormat.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, ktxStructure8.header.glInternalFormat);
+			Assert.AreEqual((uint)GlInternalFormat.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, ktxStructure8.header.glInternalFormatAsUint);
 		}
 	}
 }

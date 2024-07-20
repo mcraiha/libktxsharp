@@ -158,11 +158,12 @@ namespace KtxSharp
 		/// <summary>
 		/// KtxHeader constructor
 		/// </summary>
-		/// <param name="stream">Stream for reading</param>
-		public KtxHeader(Stream stream)
+		/// <param name="stream">Stream for reading (must be seekable stream)</param>
+		/// <param name="seekFromCurrent">Seek from current position (use this if your stream is not a single .ktx file)</param>
+		public KtxHeader(Stream stream, bool seekFromCurrent = false)
 		{
-			// Skip first 12 bytes since they only contain identifier
-			stream.Seek(12, SeekOrigin.Begin);
+			// Skip first 12 bytes since they only contain identifier (by default we assume that we are dealing with a single .ktx file)
+			stream.Seek(12, seekFromCurrent ? SeekOrigin.Current : SeekOrigin.Begin);
 
 			// Read endianness as bytes
 			byte[] endiannessBytes = new byte[4];

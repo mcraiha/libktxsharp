@@ -12,7 +12,7 @@ namespace KtxSharp
 		/// <summary>
 		/// Check if input is valid
 		/// </summary>
-		/// <param name="stream">Stream to check</param>
+		/// <param name="stream">Stream to check (must be seekable stream)</param>
 		/// <returns>Tuple that tells if input is valid, and possible error message</returns>
 		public static (bool isValid, string possibleError) CheckIfInputIsValid(Stream stream)
 		{
@@ -49,12 +49,13 @@ namespace KtxSharp
 		/// <summary>
 		/// Load KtxStructure from stream
 		/// </summary>
-		/// <param name="stream">Stream to read</param>
-		/// <returns>KtxStructure</returns>
-		public static KtxStructure LoadInput(Stream stream)
+		/// <param name="stream">Stream to read (must be seekable stream)</param>
+		/// <param name="seekFromCurrent">Seek from current position (use this if your stream is not a single .ktx file)</param>
+		/// <returns><see cref="KtxStructure"/></returns>
+		public static KtxStructure LoadInput(Stream stream, bool seekFromCurrent = false)
 		{
 			// First we read the header
-			KtxHeader header = new KtxHeader(stream);
+			KtxHeader header = new KtxHeader(stream, seekFromCurrent);
 			// Then texture data
 			KtxTextureData textureData = new KtxTextureData(header, stream);
 			// And combine those to one structure

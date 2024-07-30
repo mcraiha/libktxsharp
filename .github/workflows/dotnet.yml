@@ -1,0 +1,31 @@
+# This workflow will publish nuget package
+
+name: Publish-Nuget-Release
+
+on:
+  push:
+     tags:
+      - v1.*           # Push events to v1.0, v1.1, and v1.9 tags
+      - v0.9*          # Push events to v0.9xyz tags
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Add SHORT_SHA env property with commit short sha
+      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+    - name: Add current ISO time to env property
+      run: echo "CURRENT_TIME=`date -Iseconds`" >> $GITHUB_ENV
+    - name: Pack
+      run: |
+        cd lib
+        dotnet pack -o out --configuration Release --include-source --include-symbols /p:ContinuousIntegrationBuild=true /p:InformationalVersion="Build time: ${{env.CURRENT_TIME}} Short hash: ${{env.SHORT_SHA}}"
+    - name: Push to Nuget
+      run: dotnet nuget push ./lib/out/*.nupkg --skip-duplicate -k ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json

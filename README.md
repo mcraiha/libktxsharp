@@ -6,12 +6,16 @@ C# library for handling [KTX File Format](https://www.khronos.org/opengles/sdk/t
 
 ![](https://github.com/mcraiha/libktxsharp/workflows/CIBuild/badge.svg)
 
+## Nuget
+
+[https://www.nuget.org/packages/LibKTX/](https://www.nuget.org/packages/LibKTX/)
+
 ## Why
 
 Because KTX specs are public and I need something like this for my upcoming projects
 
 ## How to use
-1. Build .dll or include [lib folder](lib) in your project
+1. Get nuget, build .dll or include [lib folder](lib) in your project
 2. Use following code example
 ```csharp
 byte[] ktxBytes = File.ReadAllBytes("myImage.ktx");
@@ -39,7 +43,11 @@ dotnet build
 ```
 
 ### Build nuget
-TBA
+
+Move to lib folder and run
+```bash
+dotnet pack -o out --configuration Release --include-source --include-symbols
+```
 
 ## Testing
 
@@ -72,7 +80,6 @@ dotnet test
 
 ## What is missing
 
-* Nuget
 * More files for testing
 * Benchmarks
 

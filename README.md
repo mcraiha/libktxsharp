@@ -18,6 +18,8 @@ Because KTX specs are public and I need something like this for my upcoming proj
 1. Get nuget, build .dll or include [lib folder](lib) in your project
 2. Use following code example
 ```csharp
+using KtxSharp;
+
 byte[] ktxBytes = File.ReadAllBytes("myImage.ktx");
 
 KtxStructure ktxStructure = null;

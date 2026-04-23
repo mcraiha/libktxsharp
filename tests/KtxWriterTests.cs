@@ -3,81 +3,80 @@ using KtxSharp;
 using System;
 using System.IO;
 
-namespace Tests
+namespace Tests;
+
+public class KtxWriterTests
 {
-	public class KtxWriterTests
+	[Test]
+	public void ValidityWithValidSamplesTest()
 	{
-		[Test]
-		public void ValidityWithValidSamplesTest()
+		// Arrange
+		byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);
+		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validSample2Filename);
+		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
+		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
+
+		MemoryStream msWriter1 = new MemoryStream();
+		MemoryStream msWriter2 = new MemoryStream();
+		MemoryStream msWriter3 = new MemoryStream();
+		MemoryStream msWriter4 = new MemoryStream();
+
+		// Act
+		KtxStructure ktxStructure1 = null;
+		KtxStructure ktxStructure2 = null;
+		KtxStructure ktxStructure3 = null;
+		KtxStructure ktxStructure4 = null;
+
+		using (MemoryStream msReader = new MemoryStream(inputBytes1))
 		{
-			// Arrange
-			byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);
-			byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validSample2Filename);
-			byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validSample3Filename);
-			byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);
-
-			MemoryStream msWriter1 = new MemoryStream();
-			MemoryStream msWriter2 = new MemoryStream();
-			MemoryStream msWriter3 = new MemoryStream();
-			MemoryStream msWriter4 = new MemoryStream();
-
-			// Act
-			KtxStructure ktxStructure1 = null;
-			KtxStructure ktxStructure2 = null;
-			KtxStructure ktxStructure3 = null;
-			KtxStructure ktxStructure4 = null;
-
-			using (MemoryStream msReader = new MemoryStream(inputBytes1))
-			{
-				ktxStructure1 = KtxLoader.LoadInput(msReader);
-			}
-
-			using (MemoryStream msReader = new MemoryStream(inputBytes2))
-			{
-				ktxStructure2 = KtxLoader.LoadInput(msReader);
-			}
-
-			using (MemoryStream msReader = new MemoryStream(inputBytes3))
-			{
-				ktxStructure3 = KtxLoader.LoadInput(msReader);
-			}
-
-			using (MemoryStream msReader = new MemoryStream(inputBytes4))
-			{
-				ktxStructure4 = KtxLoader.LoadInput(msReader);
-			}
-
-			KtxWriter.WriteTo(ktxStructure1, msWriter1);
-			KtxWriter.WriteTo(ktxStructure2, msWriter2);
-			KtxWriter.WriteTo(ktxStructure3, msWriter3);
-			KtxWriter.WriteTo(ktxStructure4, msWriter4);
-
-			// Assert
-			Assert.AreEqual(inputBytes1, msWriter1.ToArray());
-			Assert.AreEqual(inputBytes2, msWriter2.ToArray());
-			Assert.AreEqual(inputBytes3, msWriter3.ToArray());
-			Assert.AreEqual(inputBytes4, msWriter4.ToArray());
+			ktxStructure1 = KtxLoader.LoadInput(msReader);
 		}
 
-		[Test]
-		public void NullOrInvalidInputsTest()
+		using (MemoryStream msReader = new MemoryStream(inputBytes2))
 		{
-			// Arrange
-			KtxStructure structure = null;
-			
-			MemoryStream msWriter = new MemoryStream();
-			MemoryStream msWriterNonWriteable = new MemoryStream(new byte[] { 0 }, writable: false);
-
-			// Act
-			using (FileStream input = new FileStream(CommonFiles.validSample1Filename, FileMode.Open))
-			{
-				structure = KtxLoader.LoadInput(input);
-			}
-
-			// Assert
-			Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(null, msWriter); });
-			Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(structure, null); });
-			Assert.Throws<ArgumentException>(() => { KtxWriter.WriteTo(structure, msWriterNonWriteable); });
+			ktxStructure2 = KtxLoader.LoadInput(msReader);
 		}
+
+		using (MemoryStream msReader = new MemoryStream(inputBytes3))
+		{
+			ktxStructure3 = KtxLoader.LoadInput(msReader);
+		}
+
+		using (MemoryStream msReader = new MemoryStream(inputBytes4))
+		{
+			ktxStructure4 = KtxLoader.LoadInput(msReader);
+		}
+
+		KtxWriter.WriteTo(ktxStructure1, msWriter1);
+		KtxWriter.WriteTo(ktxStructure2, msWriter2);
+		KtxWriter.WriteTo(ktxStructure3, msWriter3);
+		KtxWriter.WriteTo(ktxStructure4, msWriter4);
+
+		// Assert
+		Assert.AreEqual(inputBytes1, msWriter1.ToArray());
+		Assert.AreEqual(inputBytes2, msWriter2.ToArray());
+		Assert.AreEqual(inputBytes3, msWriter3.ToArray());
+		Assert.AreEqual(inputBytes4, msWriter4.ToArray());
+	}
+
+	[Test]
+	public void NullOrInvalidInputsTest()
+	{
+		// Arrange
+		KtxStructure structure = null;
+		
+		MemoryStream msWriter = new MemoryStream();
+		MemoryStream msWriterNonWriteable = new MemoryStream(new byte[] { 0 }, writable: false);
+
+		// Act
+		using (FileStream input = new FileStream(CommonFiles.validSample1Filename, FileMode.Open))
+		{
+			structure = KtxLoader.LoadInput(input);
+		}
+
+		// Assert
+		Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(null, msWriter); });
+		Assert.Throws<NullReferenceException>(() => { KtxWriter.WriteTo(structure, null); });
+		Assert.Throws<ArgumentException>(() => { KtxWriter.WriteTo(structure, msWriterNonWriteable); });
 	}
 }

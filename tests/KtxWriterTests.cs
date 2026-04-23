@@ -53,10 +53,10 @@ namespace Tests
 			KtxWriter.WriteTo(ktxStructure4, msWriter4);
 
 			// Assert
-			CollectionAssert.AreEqual(inputBytes1, msWriter1.ToArray());
-			CollectionAssert.AreEqual(inputBytes2, msWriter2.ToArray());
-			CollectionAssert.AreEqual(inputBytes3, msWriter3.ToArray());
-			CollectionAssert.AreEqual(inputBytes4, msWriter4.ToArray());
+			Assert.AreEqual(inputBytes1, msWriter1.ToArray());
+			Assert.AreEqual(inputBytes2, msWriter2.ToArray());
+			Assert.AreEqual(inputBytes3, msWriter3.ToArray());
+			Assert.AreEqual(inputBytes4, msWriter4.ToArray());
 		}
 
 		[Test]

@@ -7,8 +7,6 @@ namespace Tests
 {
 	public class KtxLoaderTests
 	{
-		
-
 		[Test]
 		public void ValidityWithValidSamplesTest()
 		{
@@ -81,7 +79,7 @@ namespace Tests
 
 			// Assert
 			var allFiles = new List<byte[]>() { inputBytes1, inputBytes2, inputBytes3, inputBytes4, inputBytes5, inputBytes6, inputBytes7, inputBytes8 };
-			CollectionAssert.AllItemsAreUnique(allFiles, "All input should be unique");
+			Assert.That(allFiles, Is.Unique, "All inputs should be unique");
 
 			Assert.IsTrue(wasTest1Valid);
 			Assert.IsTrue(wasTest2Valid);
@@ -188,7 +186,7 @@ namespace Tests
 
 			// Assert
 			var allFiles = new List<byte[]>() { inputBytes1, inputBytes2, inputBytes3, inputBytes4, inputBytes5, inputBytes6, inputBytes7, inputBytes8 };
-			CollectionAssert.AllItemsAreUnique(allFiles, "All input should be unique");
+			Assert.That(allFiles, Is.Unique, "All inputs should be unique");
 
 			// Compressonator sample file resolution
 			Assert.AreEqual(16, ktxStructure1.header.pixelWidth);

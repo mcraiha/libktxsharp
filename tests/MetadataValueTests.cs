@@ -20,8 +20,8 @@ namespace Tests
 			MetadataValue result3 = new MetadataValue(val3);
 
 			// Assert
-			CollectionAssert.AreNotEqual(val1, val2);
-			CollectionAssert.AreNotEqual(val1, val3);
+			Assert.AreNotEqual(val1, val2);
+			Assert.AreNotEqual(val1, val3);
 
 			Assert.IsFalse(result1.isString);
 			Assert.AreEqual(val1[0], result1.bytesValue[0]);

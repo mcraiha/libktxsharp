@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/mcraiha/libktxsharp.git</RepositoryUrl>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>

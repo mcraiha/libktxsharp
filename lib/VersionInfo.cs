@@ -13,7 +13,7 @@ public static class VersionInfo
 	/// <returns>Version string</returns>
 	public static string GetVersion()
 	{
-		var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+		var version = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 		return version;
 	}
 }

@@ -17,11 +17,6 @@ public sealed class KtxTextureData
 	public readonly uint totalTextureDataLength;
 
 	/// <summary>
-	/// Texture data as raw bytes
-	/// </summary>
-	public readonly byte[] textureDataAsRawBytes;
-
-	/// <summary>
 	/// Texture type (basic)
 	/// </summary>
 	public readonly TextureTypeBasic textureType;

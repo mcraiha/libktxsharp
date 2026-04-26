@@ -36,7 +36,7 @@ public sealed class MetadataValue
 			this.isString = true;
 			this.stringValue = System.Text.Encoding.UTF8.GetString(input, 0, indexOfNull);
 
-			this.bytesValue = null;
+			this.bytesValue = System.Array.Empty<byte>();
 		}
 		else
 		{
@@ -44,7 +44,7 @@ public sealed class MetadataValue
 			this.isString = false;
 			this.bytesValue = input;
 
-			this.stringValue = null;
+			this.stringValue = string.Empty;
 		}
 	}
 

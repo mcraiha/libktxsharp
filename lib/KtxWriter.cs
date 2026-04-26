@@ -61,7 +61,7 @@ public static class KtxWriter
 			writeLittleEndian = false;
 		}
 
-		output.Write(Common.onlyValidIdentifier, 0, Common.onlyValidIdentifier.Length);
+		output.Write(Common.onlyValidIdentifier.Span);
 		structure.header.WriteTo(output, writeLittleEndian);
 		structure.textureData.WriteTo(output, writeLittleEndian);
 	}

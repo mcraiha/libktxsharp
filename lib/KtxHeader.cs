@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace KtxSharp;
@@ -166,23 +165,23 @@ public sealed class KtxHeader
 		stream.Seek(12, seekFromCurrent ? SeekOrigin.Current : SeekOrigin.Begin);
 
 		// Read endianness as bytes
-		byte[] endiannessBytes = new byte[4];
-		int bytesRead = stream.Read(buffer: endiannessBytes, offset: 0, count: endiannessBytes.Length);
+		Span<byte> endiannessBytes = new byte[4];
+		int bytesRead = stream.Read(buffer: endiannessBytes);
 
 		if (bytesRead != 4)
 		{
 			throw new InvalidOperationException("Cannot read enough bytes from stream!");
 		}
 
-		if (!Common.littleEndianAsBytes.SequenceEqual(endiannessBytes) && !Common.bigEndianAsBytes.SequenceEqual(endiannessBytes))
+		if (!endiannessBytes.SequenceEqual(Common.littleEndianAsBytes.Span) && !endiannessBytes.SequenceEqual(Common.bigEndianAsBytes.Span))
 		{
 			throw new InvalidOperationException("Endianness info in header is not valid! You can use ValidateIdentifier method to check that you have supported KTX file.");
 		}
 
-		this.isInputLittleEndian = Common.littleEndianAsBytes.SequenceEqual(endiannessBytes);
+		this.isInputLittleEndian = endiannessBytes.SequenceEqual(Common.littleEndianAsBytes.Span);
 
 		// Turn endianness as bytes to uint
-		this.endiannessValue = BitConverter.ToUInt32(endiannessBytes, 0);
+		this.endiannessValue = BitConverter.ToUInt32(endiannessBytes);
 
 		// See if following uint reads need endian swap
 		bool shouldSwapEndianness = (this.endiannessValue != Common.expectedEndianValue);

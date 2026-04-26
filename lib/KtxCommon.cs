@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Collections.Generic;
 
@@ -13,12 +14,12 @@ public static class Common
 	/// There is only one valid file identifier for KTX 1 header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
 	/// </summary>
 	/// <value></value>
-	public static readonly byte[] onlyValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
+	public static readonly ReadOnlyMemory<byte> onlyValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
 
 	/// <summary>
 	/// KTX 2 format is not supported, but it is needed for better error message
 	/// </summary>
-	public static readonly byte[] ktx2ValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
+	public static readonly ReadOnlyMemory<byte> ktx2ValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
 
 	/// <summary>
 	/// Expected Endian value
@@ -34,13 +35,13 @@ public static class Common
 	/// Big endian value as bytes
 	/// </summary>
 	/// <value></value>
-	public static readonly byte[] bigEndianAsBytes = new byte[] { 0x04, 0x03, 0x02, 0x01 };
+	public static readonly ReadOnlyMemory<byte> bigEndianAsBytes = new byte[] { 0x04, 0x03, 0x02, 0x01 };
 
 	/// <summary>
 	/// Little endian value as bytes
 	/// </summary>
 	/// <value></value>
-	public static readonly byte[] littleEndianAsBytes = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+	public static readonly ReadOnlyMemory<byte> littleEndianAsBytes = new byte[] { 0x01, 0x02, 0x03, 0x04 };
 
 	/// <summary>
 	/// NUL is used to terminate UTF-8 strings, and padd metadata
@@ -51,7 +52,7 @@ public static class Common
 	/// Sizeof(uint)
 	/// </summary>
 	/// <returns></returns>
-	public static readonly int sizeOfUint = sizeof(uint);
+	public const int sizeOfUint = sizeof(uint);
 
 	/// <summary>
 	/// Get length of UTF-8 string as bytes

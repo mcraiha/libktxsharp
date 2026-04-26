@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Linq;
 
 namespace KtxSharp;
 
@@ -50,11 +49,13 @@ public static class KtxValidators
 		{
 			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
-				byte[] tempIdentifier = reader.ReadBytes(Common.onlyValidIdentifier.Length);
+				// TODO: Use ReadExactly when .NET 8 is support is dropped
+				Span<byte> tempIdentifier = stackalloc byte[Common.onlyValidIdentifier.Length];
+				_ = reader.Read(tempIdentifier);
 
-				if (!Common.onlyValidIdentifier.SequenceEqual(tempIdentifier))
+				if (!tempIdentifier.SequenceEqual(Common.onlyValidIdentifier.Span))
 				{
-					if (Common.ktx2ValidIdentifier.SequenceEqual(tempIdentifier))
+					if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
 					{
 						return (isValid: false, possibleError: "KTX version 2 is not supported!");
 					}
@@ -227,7 +228,7 @@ public static class KtxValidators
 			}
 
 			// There should be at least NUL
-			byte[] keyAndValueAsBytes = reader.ReadBytes((int)combinedKeyAndValueSize);
+			Span<byte> keyAndValueAsBytes = reader.ReadBytes((int)combinedKeyAndValueSize);
 
 			if (!keyAndValueAsBytes.Contains(Common.nulByte))
 			{
@@ -237,8 +238,8 @@ public static class KtxValidators
 			// Check if key is valid UTF-8 byte combination
 			try
 			{
-				UTF8Encoding utf8ThrowException = new UTF8Encoding(false, true);
-				string notUsed = utf8ThrowException.GetString(keyAndValueAsBytes, 0, keyAndValueAsBytes.Length);
+				UTF8Encoding utf8ThrowException = new UTF8Encoding(false, throwOnInvalidBytes: true);
+				_ = utf8ThrowException.GetCharCount(keyAndValueAsBytes);
 			}
 			catch (Exception e)
 			{

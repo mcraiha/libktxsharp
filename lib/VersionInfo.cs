@@ -1,20 +1,19 @@
 using System.Reflection;
 
-namespace KtxSharp
+namespace KtxSharp;
+
+/// <summary>
+/// Version info static class
+/// </summary>
+public static class VersionInfo
 {
 	/// <summary>
-	/// Version info static class
+	/// Get version
 	/// </summary>
-	public static class VersionInfo
+	/// <returns>Version string</returns>
+	public static string GetVersion()
 	{
-		/// <summary>
-		/// Get version
-		/// </summary>
-		/// <returns>Version string</returns>
-		public static string GetVersion()
-		{
-			var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-			return version;
-		}
+		var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+		return version;
 	}
 }

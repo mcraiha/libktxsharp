@@ -13,6 +13,11 @@
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>nuget-readme.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../nuget-readme.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>

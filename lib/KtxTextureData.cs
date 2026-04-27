@@ -121,7 +121,7 @@ public sealed class KtxTextureData
 					reader.ReadByte();
 				}
 			}
-		}			
+		}
 	}
 
 	/// <summary>

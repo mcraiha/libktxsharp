@@ -27,14 +27,14 @@ public sealed class MetadataValue
 	/// Constructor
 	/// </summary>
 	/// <param name="input">Input bytes</param>
-	public MetadataValue(byte[] input)
+	public MetadataValue(ReadOnlySpan<byte> input)
 	{
-		int indexOfNull = Array.FindIndex(input, b => b == Common.nulByte);
+		int indexOfNull = input.IndexOf(Common.nulByte);
 		if (indexOfNull > -1)
 		{
 			// Basically if input array contains any NUL byte, it means value is string
 			this.isString = true;
-			this.stringValue = System.Text.Encoding.UTF8.GetString(input, 0, indexOfNull);
+			this.stringValue = System.Text.Encoding.UTF8.GetString(input.Slice(0, indexOfNull));
 
 			this.bytesValue = System.Array.Empty<byte>();
 		}
@@ -42,7 +42,7 @@ public sealed class MetadataValue
 		{
 			// Otherwise it is byte array
 			this.isString = false;
-			this.bytesValue = input;
+			this.bytesValue = input.ToArray();
 
 			this.stringValue = string.Empty;
 		}

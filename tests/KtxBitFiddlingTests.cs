@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using KtxSharp;
 using System.Collections.Generic;
+using System.Buffers.Binary;
 
 namespace Tests;
 
@@ -30,7 +31,7 @@ public class KtxBitFiddlingTests
 		// Assert
 		foreach (var pair in inputOutputExpectedPairs)
 		{
-			Assert.AreEqual(pair.Value, KtxBitFiddling.SwapEndian(pair.Key), $"{pair.Key} with endian swap should be {pair.Value}");
+			Assert.AreEqual(pair.Value, BinaryPrimitives.ReverseEndianness(pair.Key), $"{pair.Key} with endian swap should be {pair.Value}");
 		}
 	}
 }

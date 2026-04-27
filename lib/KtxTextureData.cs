@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Buffers.Binary;
 
 namespace KtxSharp;
 
@@ -109,7 +110,7 @@ public sealed class KtxTextureData
 		{
 			for (int i = 0; i < mipmapLevels; i++)
 			{
-				uint amountOfDataInThisMipmapLevel = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint amountOfDataInThisMipmapLevel = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 				this.textureDataOfMipmapLevel.Add(reader.ReadBytes((int)amountOfDataInThisMipmapLevel));
 
 				// Skip possible padding bytes
@@ -153,6 +154,6 @@ public sealed class KtxTextureData
 
 	private static void WriteUintAsBigEndian(BinaryWriter writer, uint value)
 	{
-		writer.Write(KtxBitFiddling.SwapEndian(value));
+		writer.Write(BinaryPrimitives.ReverseEndianness(value));
 	}
 }

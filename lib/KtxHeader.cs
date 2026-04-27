@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Buffers.Binary;
 
 namespace KtxSharp;
 
@@ -191,7 +192,7 @@ public sealed class KtxHeader
 		{
 			// Swap endianness for every KTX variable if needed
 			
-			this.glTypeAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.glTypeAsUint = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			if (GlDataType.IsDefined(typeof(GlDataType), this.glTypeAsUint))
 			{
 				this.glDataType = (GlDataType)this.glTypeAsUint;
@@ -201,9 +202,9 @@ public sealed class KtxHeader
 				this.glDataType = GlDataType.NotKnown;
 			}
 
-			this.glTypeSizeAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.glTypeSizeAsUint = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.glFormatAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.glFormatAsUint = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			if (GlPixelFormat.IsDefined(typeof(GlPixelFormat), this.glFormatAsUint))
 			{
 				this.glFormat = (GlPixelFormat)this.glFormatAsUint;
@@ -213,7 +214,7 @@ public sealed class KtxHeader
 				this.glFormat = GlPixelFormat.NotKnown;
 			}
 
-			this.glInternalFormatAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.glInternalFormatAsUint = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			if (GlInternalFormat.IsDefined(typeof(GlInternalFormat), this.glInternalFormatAsUint))
 			{
 				this.glInternalFormat = (GlInternalFormat)this.glInternalFormatAsUint;
@@ -223,7 +224,7 @@ public sealed class KtxHeader
 				this.glInternalFormat = GlInternalFormat.NotKnown;
 			}
 
-			this.glBaseInternalFormatAsUint = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.glBaseInternalFormatAsUint = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			if (GlPixelFormat.IsDefined(typeof(GlPixelFormat), this.glBaseInternalFormatAsUint))
 			{
 				this.glPixelFormat = (GlPixelFormat)this.glBaseInternalFormatAsUint;
@@ -233,19 +234,19 @@ public sealed class KtxHeader
 				this.glPixelFormat = GlPixelFormat.NotKnown;
 			}
 
-			this.pixelWidth = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.pixelWidth = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.pixelHeight = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.pixelHeight = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.pixelDepth = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.pixelDepth = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.numberOfArrayElements = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.numberOfArrayElements = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.numberOfFaces = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.numberOfFaces = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.numberOfMipmapLevels = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.numberOfMipmapLevels = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-			this.bytesOfKeyValueData = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			this.bytesOfKeyValueData = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			
 			// Check that bytesOfKeyValueData is mod 4
 			if (this.bytesOfKeyValueData % 4 != 0)
@@ -315,7 +316,7 @@ public sealed class KtxHeader
 
 	private static void WriteUintAsBigEndian(BinaryWriter writer, uint value)
 	{
-		writer.Write(KtxBitFiddling.SwapEndian(value));
+		writer.Write(BinaryPrimitives.ReverseEndianness(value));
 	}
 
 	#region Parse metadata
@@ -326,7 +327,7 @@ public sealed class KtxHeader
 		int position = 0;
 		while (position < inputArray.Length)
 		{
-			uint combinedKeyAndValueSizeInBytes = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(BitConverter.ToUInt32(inputArray, position)) : BitConverter.ToUInt32(inputArray, position);
+			uint combinedKeyAndValueSizeInBytes = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(BitConverter.ToUInt32(inputArray, position)) : BitConverter.ToUInt32(inputArray, position);
 
 			// Pair must be larger than 0 bytes
 			if (combinedKeyAndValueSizeInBytes == 0)

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Buffers.Binary;
 
 namespace KtxSharp;
 
@@ -94,43 +95,43 @@ public static class KtxValidators
 
 				bool shouldSwapEndianness = (tempEndian != Common.expectedEndianValue);
 
-				uint glTypeTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint glTypeTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 				// TODO: uint glType to enum
 
 				// If glType is 0 it should mean that this is compressed texture
 				bool assumeCompressedTexture = (glTypeTemp == 0);
 
-				uint glTypeSizeTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint glTypeSizeTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
 				if (assumeCompressedTexture && glTypeSizeTemp != 1)
 				{
 					return (isValid: false, possibleError: "glTypeSize should be 1 for compressed textures!");
 				}
 
-				uint glFormatTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint glFormatTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
 				if (assumeCompressedTexture && glFormatTemp != 0)
 				{
 					return (isValid: false, possibleError: "glFormat should be 0 for compressed textures!");
 				}
 
-				uint glInternalFormatTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint glInternalFormatTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint glBaseInternalFormatTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint glBaseInternalFormatTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint pixelWidthTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint pixelWidthTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint pixelHeightTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint pixelHeightTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint pixelDepthTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint pixelDepthTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint numberOfArrayElementsTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint numberOfArrayElementsTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint numberOfFacesTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint numberOfFacesTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint numberOfMipmapLevelsTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint numberOfMipmapLevelsTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 
-				uint sizeOfKeyValueDataTemp = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+				uint sizeOfKeyValueDataTemp = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 				if (sizeOfKeyValueDataTemp % 4 != 0)
 				{
 					return (isValid: false, possibleError: ErrorGen.Modulo4Error(nameof(sizeOfKeyValueDataTemp), sizeOfKeyValueDataTemp));
@@ -183,7 +184,7 @@ public static class KtxValidators
 				// Check each mipmap level separately
 				for (uint u = 0; u < mipmapLevels; u++)
 				{
-					uint imageSize = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+					uint imageSize = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 					totalLengthOfTextureDataSection += (imageSize + (uint)Common.sizeOfUint);
 					if (imageSize > expectedTextureDataSize || totalLengthOfTextureDataSection > expectedTextureDataSize)
 					{
@@ -219,7 +220,7 @@ public static class KtxValidators
 
 		while (currentPosition < bytesOfKeyValueData)
 		{
-			uint combinedKeyAndValueSize = shouldSwapEndianness ? KtxBitFiddling.SwapEndian(reader.ReadUInt32()) : reader.ReadUInt32();
+			uint combinedKeyAndValueSize = shouldSwapEndianness ? BinaryPrimitives.ReverseEndianness(reader.ReadUInt32()) : reader.ReadUInt32();
 			currentPosition += (uint)Common.sizeOfUint;
 
 			if ((currentPosition + combinedKeyAndValueSize) > bytesOfKeyValueData)

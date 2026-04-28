@@ -31,6 +31,11 @@ public static class KtxValidators
 			return (isValid: false, possibleError: "Stream is not readable!");
 		}
 
+		if (!stream.CanSeek)
+		{
+			return (isValid: false, possibleError: "Stream is not seekable!");
+		}
+
 		if (stream.Length < minInputSizeInBytes)
 		{
 			return (isValid: false, possibleError: $"KTX input should have at least { minInputSizeInBytes } bytes!");
@@ -51,16 +56,19 @@ public static class KtxValidators
 			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
 				// TODO: Use ReadExactly when .NET 8 is support is dropped
-				Span<byte> tempIdentifier = stackalloc byte[Common.onlyValidIdentifier.Length];
+				Span<byte> tempIdentifier = stackalloc byte[Common.ktx1ValidIdentifier.Length];
 				_ = reader.Read(tempIdentifier);
 
-				if (!tempIdentifier.SequenceEqual(Common.onlyValidIdentifier.Span))
+				if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
 				{
-					if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
-					{
-						return (isValid: false, possibleError: "KTX version 2 is not supported!");
-					}
-
+					return (isValid: true, possibleError: "");
+				}
+				else if (tempIdentifier.SequenceEqual(Common.ktx1ValidIdentifier.Span))
+				{
+					return (isValid: true, possibleError: "");
+				}
+				else
+				{
 					return (isValid: false, possibleError: "Identifier does not match requirements!");
 				}
 			}
@@ -69,8 +77,6 @@ public static class KtxValidators
 		{
 			return (isValid: false, e.ToString());
 		}
-
-		return (isValid: true, possibleError: "");
 	}
 
 	/// <summary>
@@ -78,7 +84,7 @@ public static class KtxValidators
 	/// </summary>
 	/// <param name="stream">Stream for reading</param>
 	/// <returns>Tuple that tells if stream is valid, and possible error</returns>
-	public static (bool isValid, string possibleError) ValidateHeaderData(Stream stream)
+	public static (bool isValid, string possibleError) ValidateKtx1HeaderData(Stream stream)
 	{
 		// Use the stream in a binary reader.
 		try
@@ -138,11 +144,11 @@ public static class KtxValidators
 				}
 				
 				// Validate metadata
-				(bool validMedata, string possibleMetadataError) = ValidateMetadata(reader, sizeOfKeyValueDataTemp, shouldSwapEndianness);
+				(bool validMedata, string possibleMetadataError) = ValidateKtx1Metadata(reader, sizeOfKeyValueDataTemp, shouldSwapEndianness);
 				if (!validMedata)
 				{
 					return (isValid: false, possibleError: possibleMetadataError);
-				}				
+				}
 			}
 		}
 		catch (Exception e)
@@ -160,7 +166,7 @@ public static class KtxValidators
 	/// <param name="header">Header</param>
 	/// <param name="expectedTextureDataSize">Expected texture data size</param>
 	/// <returns>Tuple that tells if stream is valid, and possible error</returns>
-	public static (bool isValid, string possibleError) ValidateTextureData(Stream stream, KtxHeader header, uint expectedTextureDataSize)
+	public static (bool isValid, string possibleError) ValidateKtx1TextureData(Stream stream, KtxHeader header, uint expectedTextureDataSize)
 	{
 		// Use the stream in a binary reader.
 		try
@@ -214,7 +220,7 @@ public static class KtxValidators
 		return (isValid: true, possibleError: "");
 	}
 
-	private static (bool isValid, string possibleError) ValidateMetadata(BinaryReader reader, uint bytesOfKeyValueData, bool shouldSwapEndianness)
+	private static (bool isValid, string possibleError) ValidateKtx1Metadata(BinaryReader reader, uint bytesOfKeyValueData, bool shouldSwapEndianness)
 	{
 		uint currentPosition = 0;
 

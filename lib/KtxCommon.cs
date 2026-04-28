@@ -14,10 +14,10 @@ public static class Common
 	/// There is only one valid file identifier for KTX 1 header, it is '«', 'K', 'T', 'X', ' ', '1', '1', '»', '\r', '\n', '\x1A', '\n'
 	/// </summary>
 	/// <value></value>
-	public static readonly ReadOnlyMemory<byte> onlyValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
+	public static readonly ReadOnlyMemory<byte> ktx1ValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
 
 	/// <summary>
-	/// KTX 2 format is not supported, but it is needed for better error message
+	/// There is only one valid file identifier for KTX 2 header, it is '«', 'K', 'T', 'X', ' ', '2', '0', '»', '\r', '\n', '\x1A', '\n'
 	/// </summary>
 	public static readonly ReadOnlyMemory<byte> ktx2ValidIdentifier = new byte[] { 0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A };
 

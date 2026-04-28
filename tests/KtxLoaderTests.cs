@@ -8,7 +8,7 @@ namespace Tests;
 public class KtxLoaderTests
 {
 	[Test]
-	public void ValidityWithValidSamplesTest()
+	public void ValidityWithValidKtx1SamplesTest()
 	{
 		// Arrange
 		byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);
@@ -101,7 +101,7 @@ public class KtxLoaderTests
 	}
 
 	[Test]
-	public void ValidityWithInvalidSamplesTest()
+	public void ValidityWithInvalidKtx1SamplesTest()
 	{
 		// Arrange
 		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validSample4Filename);	
@@ -123,7 +123,7 @@ public class KtxLoaderTests
 	}
 
 	[Test]
-	public void CheckHeadersWithValidSamplesTest()
+	public void CheckHeadersWithValidKtx1SamplesTest()
 	{
 		// Arrange
 		byte[] inputBytes1 = File.ReadAllBytes(CommonFiles.validSample1Filename);

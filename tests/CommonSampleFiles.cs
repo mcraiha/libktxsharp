@@ -5,6 +5,15 @@ public static class CommonFiles
 {
 	// If you add any more test files here, remember to add them to tests.csproj !
 
+	/*
+	 _  __  _______  __   __  __ 
+	| |/ / |__   __| \ \ / / /_ |
+	| ' /     | |     \ V /   | |
+	|  <      | |      > <    | |
+	| . \     | |     / . \   | |
+	|_|\_\    |_|    /_/ \_\  |_|
+    */
+
 	/// <summary>
 	/// First sample file is created with Compressonator https://github.com/GPUOpen-Tools/Compressonator
 	/// </summary>
@@ -44,4 +53,13 @@ public static class CommonFiles
 	/// Eight sample file is from ktxtest GitHub repo https://github.com/sevmeyer/ktxtest
 	/// </summary>
 	public static readonly string validSample8Filename = "format_pvrtc1_4bpp_unorm.ktx";
+
+	/*
+	 _  __  _______  __   __  ___  
+	| |/ / |__   __| \ \ / / |__ \ 
+	| ' /     | |     \ V /     ) |
+	|  <      | |      > <     / / 
+	| . \     | |     / . \   / /_ 
+	|_|\_\    |_|    /_/ \_\ |____|
+	*/
 }

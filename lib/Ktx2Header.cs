@@ -196,7 +196,7 @@ public sealed class Ktx2Header
 
 			this.dfdTotalSize = reader.ReadUInt32();
 
-			this.dataFormatDescriptorRaw = reader.ReadBytes((int)this.dfdTotalSize);
+			this.dataFormatDescriptorRaw = reader.ReadBytes((int)this.dfdTotalSize - Common.sizeOfUint);
 
 
 			// Key/Value Data

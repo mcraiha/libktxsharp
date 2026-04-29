@@ -8,7 +8,7 @@ using System.Buffers.Binary;
 namespace KtxSharp;
 
 /// <summary>
-/// Texture data class
+/// KTX texture data class
 /// </summary>
 public sealed class KtxTextureData
 {

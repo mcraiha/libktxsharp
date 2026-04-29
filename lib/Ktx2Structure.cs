@@ -19,7 +19,7 @@ public sealed class Ktx2Structure
 	/// <summary>
 	/// KTX2 texture data
 	/// </summary>
-	public readonly Ktx2TextureData textureData;
+	public readonly Ktx2TextureData ktx2TextureData;
 
 	/// <summary>
 	/// Constuctor for Ktx2Structure
@@ -31,6 +31,6 @@ public sealed class Ktx2Structure
 	{
 		this.ktx2Header = header;
 		this.ktx2Supercompression = supercompression;
-		this.textureData = texData;
+		this.ktx2TextureData = texData;
 	}
 }

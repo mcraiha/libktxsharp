@@ -8,7 +8,7 @@ namespace Tests;
 public class Ktx2LoaderTests
 {
 	[Test]
-	public void CheckHeadersWithValidKtx2SamplesTest()
+	public void CheckWithValidKtx2SamplesTest()
 	{
 		// Arrange
 		byte[] inputBytes1 = Ktx2Samples.ktx2Sample1;
@@ -21,6 +21,10 @@ public class Ktx2LoaderTests
 		}
 
 		Ktx2Header ktx2Header1 = ktx2Structure1.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression1 = ktx2Structure1.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData1 = ktx2Structure1.ktx2TextureData;
 
 		// Assert
 		Assert.That(ktx2Header1.vkFormatUint, Is.EqualTo(0));
@@ -47,6 +51,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.levelIndexes[0].uncompressedByteLength, Is.EqualTo(0x0000000000000000));
 
 		Assert.That(ktx2Header1.dfdTotalSize, Is.EqualTo(60));
+		Assert.That(ktx2Header1.dataFormatDescriptorRaw.Length, Is.EqualTo(60 - Common.sizeOfUint));
 
 		Assert.That(ktx2Header1.metadataDictionary.Count, Is.EqualTo(2));
 		Assert.That(ktx2Header1.metadataDictionary.ContainsKey("KTXorientation"), Is.True);
@@ -56,5 +61,11 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.metadataDictionary.ContainsKey("KTXwriter"), Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXwriter"].isString, Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXwriter"].stringValue, Is.EqualTo("toktx v4.0.__default__ / libktx v4.0.__default__"));
+
+		Assert.That(ktx2Header1.sgdByteLength, Is.EqualTo(ktx2Supercompression1.supercompressionGlobalDataRaw.Length));
+
+		Assert.That(ktx2TextureData1.levelImages.Count, Is.EqualTo(1));
+		Assert.That(ktx2Header1.levelIndexes[0].byteLength, Is.EqualTo(ktx2TextureData1.levelImages[0].Length));
+		Assert.That(ktx2TextureData1.levelImages[0], Is.EqualTo(new byte[] {0x4E, 0x0E, 0x04}));
 	}
 }

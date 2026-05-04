@@ -1,10 +1,11 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace KtxSharp;
 
 /// <summary>
-/// Load Ktx2 (.ktx2 files) input static class
+/// Load Ktx2 (.ktx2 files) input. Static class
 /// </summary>
 public static class Ktx2Loader
 {
@@ -58,7 +59,9 @@ public static class Ktx2Loader
 		Ktx2Supercompression supercompression = new Ktx2Supercompression(stream, header.sgdByteLength);
 
 		// Finally texture data
-		Ktx2TextureData textureData = new Ktx2TextureData(stream, header.levelIndexes);
+		var orderedList = new List<LevelIndex>(header.levelIndexes); // Create copy
+		orderedList.Sort((a,b) => a.byteOffset.CompareTo(b.byteOffset)); // Sort the copy
+		Ktx2TextureData textureData = new Ktx2TextureData(stream, orderedList, header.supercompressionScheme != SupercompressionScheme.None);
 
 		// And combine those to one structure
 		return new Ktx2Structure(header, supercompression, textureData);

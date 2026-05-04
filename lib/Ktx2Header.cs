@@ -29,9 +29,29 @@ public sealed class Ktx2Header
 	/// </summary>
 	/// <remarks>0 is not a valid value!</remarks>
 	public readonly uint pixelWidth;
+
+	/// <summary>
+	/// The height of the texture image for level 0, in pixels.
+	/// </summary>
+	/// <remarks>0 is not a valid value for block-compressed formats, including BasisLZ/ETC1S and UASTC</remarks>
 	public readonly uint pixelHeight;
+
+	/// <summary>
+	/// The depth of the texture image for level 0
+	/// </summary>
+	/// <remarks>0 is not a valid value for block-compressed formats that have block depth greater than 1. Must be 0 for depth or stencil formats</remarks>
 	public readonly uint pixelDepth;
+
+	/// <summary>
+	/// The number of array elements
+	/// </summary>
+	/// <remarks>If the texture is not an array texture, layerCount must equal 0</remarks>
 	public readonly uint layerCount;
+
+	/// <summary>
+	/// Specifies the number of cubemap faces
+	/// </summary>
+	/// <remarks>For cubemaps and cubemap arrays this must be 6. For non cubemaps this must be 1</remarks>
 	public readonly uint faceCount;
 
 	/// <summary>
@@ -95,6 +115,9 @@ public sealed class Ktx2Header
 	/// </summary>
 	public readonly uint dfdTotalSize;
 
+	/// <summary>
+	/// Bytes of data format descriptor
+	/// </summary>
 	public readonly byte[] dataFormatDescriptorRaw;
 
 
@@ -246,7 +269,7 @@ public sealed class Ktx2Header
 			
 			position += (keyLength + 1 /* Because we have to skip nul byte*/);
 			
-			int valueLength = (int)combinedKeyAndValueSizeInBytes - keyLength;
+			int valueLength = (int)combinedKeyAndValueSizeInBytes - keyLength - 1;
 			byte[] bytesOfValue = new byte[valueLength];
 			Buffer.BlockCopy(src: inputArray, srcOffset: position, dst: bytesOfValue, dstOffset: 0, count: valueLength);
 

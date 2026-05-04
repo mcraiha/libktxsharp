@@ -62,4 +62,14 @@ public static class CommonFiles
 	| . \     | |     / . \   / /_ 
 	|_|\_\    |_|    /_/ \_\ |____|
 	*/
+
+	/// <summary>
+	/// First KTX2 sample file is created with ktx create https://github.com/khronosgroup/ktx-software
+	/// </summary>
+	public static readonly string validKtx2Sample1Filename = "8x8_no_mipmaps.ktx2";
+
+	/// <summary>
+	/// Second KTX2 sample file is created with ktx create https://github.com/khronosgroup/ktx-software
+	/// </summary>
+	public static readonly string validKtx2Sample2Filename = "8x8_with_mipmaps.ktx2";
 }

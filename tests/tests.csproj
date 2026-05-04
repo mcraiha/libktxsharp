@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- KTX sample files -->
     <None Update="16x16_colors_Compressonator.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="16x16_colors_PVRTexTool.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="testimage_SIGNED_R11_EAC.ktx" CopyToOutputDirectory="PreserveNewest" />
@@ -25,6 +26,10 @@
     <None Update="smiling_etc_64x64_Compressonator.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="smiling_ATC_RGBA_Explicit.ktx" CopyToOutputDirectory="PreserveNewest" />
     <None Update="format_pvrtc1_4bpp_unorm.ktx" CopyToOutputDirectory="PreserveNewest" />
+
+    <!-- KTX2 sample files -->
+    <None Update="8x8_no_mipmaps.ktx2" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="8x8_with_mipmaps.ktx2" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

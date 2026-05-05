@@ -30,6 +30,7 @@
     <!-- KTX2 sample files -->
     <None Update="8x8_no_mipmaps.ktx2" CopyToOutputDirectory="PreserveNewest" />
     <None Update="8x8_with_mipmaps.ktx2" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="8x8_no_mipmaps_zlib.ktx2" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

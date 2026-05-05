@@ -14,6 +14,7 @@ public class Ktx2LoaderTests
 		byte[] inputBytes1 = Ktx2Samples.ktx2Sample1;
 		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
 		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validKtx2Sample2Filename);
+		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validKtx2Sample3Filename);
 
 		// Act
 		Ktx2Structure ktx2Structure1 = null;
@@ -53,6 +54,19 @@ public class Ktx2LoaderTests
 		Ktx2Supercompression ktx2Supercompression3 = ktx2Structure3.ktx2Supercompression;
 
 		Ktx2TextureData ktx2TextureData3 = ktx2Structure3.ktx2TextureData;
+
+
+		Ktx2Structure ktx2Structure4 = null;
+		using (MemoryStream ms4 = new MemoryStream(inputBytes4))
+		{
+			ktx2Structure4 = Ktx2Loader.LoadInput(ms4);
+		}
+
+		Ktx2Header ktx2Header4 = ktx2Structure4.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression4 = ktx2Structure4.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData4 = ktx2Structure4.ktx2TextureData;
 
 		// Assert
 		Assert.That(ktx2Header1.vkFormatUint, Is.EqualTo(0));
@@ -221,5 +235,47 @@ public class Ktx2LoaderTests
 																			0x1A, 0x60, 0x11, 0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06,
 																			0x42, 0x2C, 0x23, 0x33, 0x3B, 0x1C, 0x25, 0x4C, 0x17, 0x1A, 0x60, 0x11,
 																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
+
+
+		Assert.That(ktx2Header4.vkFormatUint, Is.EqualTo(23));
+		Assert.That(ktx2Header4.vkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(ktx2Header4.typeSize, Is.EqualTo(1));
+		Assert.That(ktx2Header4.pixelWidth, Is.EqualTo(8));
+		Assert.That(ktx2Header4.pixelHeight, Is.EqualTo(8));
+		Assert.That(ktx2Header4.pixelDepth, Is.EqualTo(0));
+		Assert.That(ktx2Header4.supercompressionSchemeUint, Is.EqualTo(3));
+		Assert.That(ktx2Header4.supercompressionScheme, Is.EqualTo(SupercompressionScheme.ZLIB));
+
+		Assert.That(ktx2Header4.dfdByteOffset, Is.EqualTo(0x00000068));
+		Assert.That(ktx2Header4.dfdByteLength, Is.EqualTo(0x0000004C));
+
+		Assert.That(ktx2Header4.kvdByteOffset, Is.EqualTo(0x000000B4));
+		Assert.That(ktx2Header4.kvdByteLength, Is.EqualTo(0x00000050));
+
+		Assert.That(ktx2Header4.sgdByteOffset, Is.EqualTo(0x0000000000000000));
+		Assert.That(ktx2Header4.sgdByteLength, Is.EqualTo(0x0000000000000000));
+
+		Assert.That(ktx2Header4.levelIndexes.Count, Is.EqualTo(1));
+		Assert.That(ktx2Header4.levelIndexes[0].byteOffset, Is.EqualTo(0x0000000000000104));
+		Assert.That(ktx2Header4.levelIndexes[0].byteLength, Is.EqualTo(0x0000000000000015));
+		Assert.That(ktx2Header4.levelIndexes[0].uncompressedByteLength, Is.EqualTo(0x00000000000000C0));
+
+		Assert.That(ktx2Header4.dfdTotalSize, Is.EqualTo(76));
+		Assert.That(ktx2Header4.dataFormatDescriptorRaw.Length, Is.EqualTo(76 - Common.sizeOfUint));
+
+		Assert.That(ktx2Header4.metadataDictionary.Count, Is.EqualTo(2));
+		Assert.That(ktx2Header4.metadataDictionary.ContainsKey("KTXwriterScParams"), Is.True);
+		Assert.That(ktx2Header4.metadataDictionary["KTXwriterScParams"].isString, Is.True);
+		Assert.That(ktx2Header4.metadataDictionary["KTXwriterScParams"].stringValue, Is.EqualTo("--zlib 9"));
+		Assert.That(ktx2Header4.metadataDictionary.ContainsKey("KTXwriter"), Is.True);
+		Assert.That(ktx2Header4.metadataDictionary["KTXwriter"].isString, Is.True);
+		Assert.That(ktx2Header4.metadataDictionary["KTXwriter"].stringValue, Is.EqualTo("ktx create v4.4.2 / libktx v4.4.2"));
+
+		Assert.That(ktx2Header4.sgdByteLength, Is.EqualTo(ktx2Supercompression4.supercompressionGlobalDataRaw.Length));
+
+		Assert.That(ktx2TextureData4.levelImages.Count, Is.EqualTo(1));
+		Assert.That(ktx2Header4.levelIndexes[0].byteLength, Is.EqualTo(ktx2TextureData4.levelImages[0].Length));
+		Assert.That(ktx2TextureData4.levelImages[0], Is.EqualTo(new byte[] {0x78, 0x01, 0xD5, 0xC0, 0x81, 0x00, 0x00, 0x00, 0x00, 0x80, 0x20, 0x7F,
+																			0xEA, 0xE6, 0x38, 0xDE, 0x02, 0x1C, 0x98, 0xBF, 0x41}));
 	}
 }

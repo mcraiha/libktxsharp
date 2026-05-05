@@ -4,6 +4,9 @@ using System.Text;
 
 namespace KtxSharp;
 
+/// <summary>
+/// Data used by certain supercompression schemes
+/// </summary>
 public sealed class Ktx2Supercompression
 {
 	// Supercompression Global Data

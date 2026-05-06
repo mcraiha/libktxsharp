@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.IO.Compression;
 
 namespace KtxSharp;
 
@@ -24,7 +25,7 @@ public sealed class Ktx2TextureData
 	public readonly List<byte[]> levelImages = new List<byte[]>();
 
 	/// <summary>
-	/// Only constructor
+	/// Only public constructor
 	/// </summary>
 	/// <param name="stream">Stream for reading</param>
 	/// <param name="levelIndexes">List of level indexes</param>
@@ -49,5 +50,44 @@ public sealed class Ktx2TextureData
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Create uncompressed Ktx2TextureData from existing Ktx2TextureData
+	/// </summary>
+	/// <param name="compressed">Copmressed Ktx2TextureData</param>
+	private Ktx2TextureData(Ktx2TextureData compressed)
+	{
+		this.supercompression = SupercompressionScheme.None;
+
+		for (int i = 0; i < compressed.levelImages.Count; i++)
+		{
+			if (compressed.supercompression == SupercompressionScheme.ZLIB)
+			{
+				using (MemoryStream outStream = new MemoryStream())
+				using (MemoryStream inStream = new MemoryStream(compressed.levelImages[i]))
+				using (var decompressStream = new ZLibStream(inStream, CompressionMode.Decompress))
+				{
+					decompressStream.CopyTo(outStream);
+					this.levelImages.Add(outStream.ToArray());
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Create uncompressed texture data from compressed texzture
+	/// </summary>
+	/// <returns>Ktx2TextureData</returns>
+	/// <exception cref="InvalidOperationException">If operation is not possible</exception>
+	/// <exception cref="NotImplementedException">If it has not yet been implemented</exception>
+	public Ktx2TextureData CreateUncompressed()
+	{
+		return this.supercompression switch
+		{
+			SupercompressionScheme.None => throw new InvalidOperationException("Cannot uncompress textures that are not compressed!"),
+			SupercompressionScheme.ZLIB => new Ktx2TextureData(this),
+			_ => throw new NotImplementedException("Not implemented yet!")
+		};
 	}
 }

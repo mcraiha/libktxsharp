@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using KtxSharp;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Tests;
@@ -67,6 +68,8 @@ public class Ktx2LoaderTests
 		Ktx2Supercompression ktx2Supercompression4 = ktx2Structure4.ktx2Supercompression;
 
 		Ktx2TextureData ktx2TextureData4 = ktx2Structure4.ktx2TextureData;
+
+		Ktx2TextureData ktx2TextureData4Uncompressed = ktx2TextureData4.CreateUncompressed();
 
 		// Assert
 		Assert.That(ktx2Header1.vkFormatUint, Is.EqualTo(0));
@@ -277,5 +280,9 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header4.levelIndexes[0].byteLength, Is.EqualTo(ktx2TextureData4.levelImages[0].Length));
 		Assert.That(ktx2TextureData4.levelImages[0], Is.EqualTo(new byte[] {0x78, 0x01, 0xD5, 0xC0, 0x81, 0x00, 0x00, 0x00, 0x00, 0x80, 0x20, 0x7F,
 																			0xEA, 0xE6, 0x38, 0xDE, 0x02, 0x1C, 0x98, 0xBF, 0x41}));
+
+		Assert.That(ktx2TextureData4.levelImages.Count, Is.EqualTo(ktx2TextureData4Uncompressed.levelImages.Count));
+		Assert.That(ktx2Header4.levelIndexes[0].uncompressedByteLength, Is.EqualTo(ktx2TextureData4Uncompressed.levelImages[0].Length));
+		Assert.That(ktx2TextureData4Uncompressed.levelImages[0], Is.EqualTo(Enumerable.Repeat((byte)0xFF, 192).ToArray()));
 	}
 }

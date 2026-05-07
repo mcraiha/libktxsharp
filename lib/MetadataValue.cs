@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace KtxSharp;
 
@@ -14,17 +13,17 @@ public sealed class MetadataValue
 	public readonly bool isString;
 
 	/// <summary>
-	/// Bytes value, null if metadata is strings
+	/// Bytes value, empty array if metadata is string
 	/// </summary>
 	public readonly byte[] bytesValue;
 
 	/// <summary>
-	/// String value, null if metadata is byte array
+	/// String value, string.Empty if metadata is byte array
 	/// </summary>
 	public readonly string stringValue;
 
 	/// <summary>
-	/// Constructor
+	/// Only constructor
 	/// </summary>
 	/// <param name="input">Input bytes</param>
 	public MetadataValue(ReadOnlySpan<byte> input)

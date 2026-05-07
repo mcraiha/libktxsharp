@@ -84,7 +84,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.dfdByteOffset, Is.EqualTo(0x00000068));
 		Assert.That(ktx2Header1.dfdByteLength, Is.EqualTo(0x0000003C));
 
-		Assert.That(ktx2Header1.kvdByteOffset, Is.EqualTo(0x000000C4));
+		Assert.That(ktx2Header1.kvdByteOffset, Is.EqualTo(0x000000A4));
 		Assert.That(ktx2Header1.kvdByteLength, Is.EqualTo(0x00000058));
 
 		Assert.That(ktx2Header1.sgdByteOffset, Is.EqualTo(0x0000000000000120));

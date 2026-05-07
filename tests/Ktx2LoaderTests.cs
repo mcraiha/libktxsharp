@@ -87,11 +87,11 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.kvdByteOffset, Is.EqualTo(0x000000A4));
 		Assert.That(ktx2Header1.kvdByteLength, Is.EqualTo(0x00000058));
 
-		Assert.That(ktx2Header1.sgdByteOffset, Is.EqualTo(0x0000000000000120));
-		Assert.That(ktx2Header1.sgdByteLength, Is.EqualTo(0x0000000000000090));
+		Assert.That(ktx2Header1.sgdByteOffset, Is.EqualTo(0x0000000000000100));
+		Assert.That(ktx2Header1.sgdByteLength, Is.EqualTo(0x000000000000008C));
 
 		Assert.That(ktx2Header1.levelIndexes.Count, Is.EqualTo(1));
-		Assert.That(ktx2Header1.levelIndexes[0].byteOffset, Is.EqualTo(0x00000000000001B0));
+		Assert.That(ktx2Header1.levelIndexes[0].byteOffset, Is.EqualTo(0x000000000000018C));
 		Assert.That(ktx2Header1.levelIndexes[0].byteLength, Is.EqualTo(0x0000000000000003));
 		Assert.That(ktx2Header1.levelIndexes[0].uncompressedByteLength, Is.EqualTo(0x0000000000000000));
 

@@ -224,67 +224,8 @@ public sealed class Ktx2Header
 
 			// Key/Value Data
 
-			this.metadataDictionary = ParseMetadata(reader.ReadBytes((int)this.kvdByteLength));
+			this.metadataDictionary = Ktx2Metadata.ParseMetadata(reader.ReadBytes((int)this.kvdByteLength));
 		}
-	}
-
-	private static Dictionary<string, MetadataValue> ParseMetadata(byte[] inputArray)
-	{
-		Dictionary<string, MetadataValue> returnDictionary = new Dictionary<string, MetadataValue>();
-		int position = 0;
-		while (position < inputArray.Length)
-		{
-			uint combinedKeyAndValueSizeInBytes = BitConverter.ToUInt32(inputArray, position);
-
-			// Pair must be larger than 0 bytes
-			if (combinedKeyAndValueSizeInBytes == 0)
-			{
-				throw new InvalidOperationException("Metadata: combinedKeyAndValueSize cannot be 0!");
-			}
-
-			position += Common.sizeOfUint;
-
-			// Error out in case size is larger than bytes left
-			if (combinedKeyAndValueSizeInBytes + 4 > (uint) inputArray.Length)
-			{
-				throw new InvalidOperationException("Metadata: combinedKeyAndValueSize cannot be larger than whole metadata!");
-			}
-
-			// Find NUL since key should always have it
-			int indexOfFirstNul = Array.IndexOf(inputArray, Common.nulByte, position);
-
-			if (indexOfFirstNul < 0)
-			{
-				throw new InvalidOperationException("Metadata: No Nul found when looking for key");
-			}
-
-			int keyLength = indexOfFirstNul - position;
-
-			if (keyLength > combinedKeyAndValueSizeInBytes)
-			{
-				throw new InvalidOperationException("Metadata: Key length is longer than combinedKeyAndValueSizeInBytes!");
-			}
-
-			string key = System.Text.Encoding.UTF8.GetString(bytes: inputArray, index: position, count: keyLength);
-			
-			position += (keyLength + 1 /* Because we have to skip nul byte*/);
-			
-			int valueLength = (int)combinedKeyAndValueSizeInBytes - keyLength - 1;
-			byte[] bytesOfValue = new byte[valueLength];
-			Buffer.BlockCopy(src: inputArray, srcOffset: position, dst: bytesOfValue, dstOffset: 0, count: valueLength);
-
-			returnDictionary[key] = new MetadataValue(bytesOfValue);
-
-			position += valueLength;
-
-			// Skip value paddings if there are any
-			while (position % 4 != 0)
-			{
-				position++;
-			}
-		}
-
-		return returnDictionary;
 	}
 }
 

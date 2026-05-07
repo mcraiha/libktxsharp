@@ -69,7 +69,7 @@ public sealed class Ktx2Header
 	// Index section
 
 	/// <summary>
-	/// The offset from the start of the file of the dfdTotalSize field of the Data Format Descriptor
+	/// The offset from the start of the file to the dfdTotalSize field of the Data Format Descriptor
 	/// </summary>
 	public readonly uint dfdByteOffset;
 
@@ -89,7 +89,7 @@ public sealed class Ktx2Header
 	public readonly uint kvdByteLength;
 
 	/// <summary>
-	/// The offset from the start of the file of supercompressionGlobalData.
+	/// The offset from the start of the file to supercompressionGlobalData.
 	/// </summary>
 	/// <remarks>The value must be 0 when sgdByteLength = 0</remarks>
 	public readonly ulong sgdByteOffset;
@@ -225,6 +225,16 @@ public sealed class Ktx2Header
 			// Key/Value Data
 
 			this.metadataDictionary = Ktx2Metadata.ParseMetadata(reader.ReadBytes((int)this.kvdByteLength));
+
+			// Some additional conditional padding
+			if (this.sgdByteLength > 0)
+			{
+				int overFromAlign8 = (int)stream.Position % 8;
+				if (overFromAlign8 > 0)
+				{
+					_ = reader.ReadBytes(8 - overFromAlign8);
+				}
+			}
 		}
 	}
 }

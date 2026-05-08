@@ -54,4 +54,27 @@ public class KtxValidatorsTests
 		Assert.IsTrue(string.IsNullOrEmpty(possibleError));
 	}
 
+	[Test]
+	public void ValidateKtx2HeaderDataInvalidInputs()
+	{
+		// Arrange
+		MemoryStream msIncorrectVkFormat = new MemoryStream(new byte[] { 0xFF, 0xFF, 0xFF, 0xFE });
+		MemoryStream msTypesizeMismatch = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+		MemoryStream msPixelWidthZero = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+
+		// Act
+		var errorIncorrectVkFormat = KtxValidators.ValidateKtx2HeaderData(msIncorrectVkFormat);
+		var errorTypesizeMismatch = KtxValidators.ValidateKtx2HeaderData(msTypesizeMismatch);
+		var errorPixelWidthZero = KtxValidators.ValidateKtx2HeaderData(msPixelWidthZero);
+
+		// Assert
+		Assert.That(errorIncorrectVkFormat.isValid, Is.False);
+		Assert.That(errorIncorrectVkFormat.possibleError.Contains("into VkFormat!"), Is.True);
+
+		Assert.That(errorTypesizeMismatch.isValid, Is.False);
+		Assert.That(errorTypesizeMismatch.possibleError, Is.EqualTo("VK_FORMAT_UNDEFINED and typeSize 0 is not a valid combination!"));
+
+		Assert.That(errorPixelWidthZero.isValid, Is.False);
+		Assert.That(errorPixelWidthZero.possibleError, Is.EqualTo("PixelWidth cannot be 0!"));
+	}
 }

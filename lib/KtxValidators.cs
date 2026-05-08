@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Buffers.Binary;
+using System.Collections.Generic;
 
 namespace KtxSharp;
 
@@ -107,7 +108,7 @@ public static class KtxValidators
 	}
 
 	/// <summary>
-	/// Validate header data
+	/// Validate KTX header data
 	/// </summary>
 	/// <param name="stream">Stream for reading</param>
 	/// <returns>Tuple that tells if stream is valid, and possible error</returns>
@@ -175,6 +176,153 @@ public static class KtxValidators
 				if (!validMedata)
 				{
 					return (isValid: false, possibleError: possibleMetadataError);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			return (isValid: false, e.ToString());
+		}
+
+		return (isValid: true, possibleError: "");
+	}
+
+	private const uint ktx2SmallestAllowedOffsetValue = 12 + 9*4 + 4*4 + 2*8;
+
+	/// <summary>
+	/// Validate KTX2 header data
+	/// </summary>
+	/// <param name="stream">Stream for reading</param>
+	/// <returns>Tuple that tells if stream is valid, and possible error</returns>
+	public static (bool isValid, string possibleError) ValidateKtx2HeaderData(Stream stream)
+	{
+		// Use the stream in a binary reader.
+		try
+		{
+			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
+			{
+				// Start validating header
+
+				uint vkFormatUint = reader.ReadUInt32();
+				if (!VkFormat.IsDefined(typeof(VkFormat), vkFormatUint))
+				{
+					return (isValid: false, possibleError: $"Cannot turn {vkFormatUint} into VkFormat!");
+				}
+
+				VkFormat vkFormat = (VkFormat)vkFormatUint;
+
+				uint typeSize = reader.ReadUInt32();
+
+				if (vkFormat == VkFormat.VK_FORMAT_UNDEFINED && typeSize != 1)
+				{
+					return (isValid: false, possibleError: $"VK_FORMAT_UNDEFINED and typeSize {typeSize} is not a valid combination!");
+				}
+
+				uint pixelWidth = reader.ReadUInt32();
+
+				if (pixelWidth == 0)
+				{
+					return (isValid: false, possibleError: "PixelWidth cannot be 0!");
+				}
+
+				uint pixelHeight = reader.ReadUInt32();
+
+				uint pixelDepth = reader.ReadUInt32();
+
+				uint layerCount = reader.ReadUInt32();
+
+				uint faceCount = reader.ReadUInt32();
+
+				if (faceCount == 6 && pixelWidth != pixelHeight)
+				{
+					return (isValid: false, possibleError: $"PixelWidth and PixelHeight must be equal for cube textures!");
+				}
+
+				uint levelCount = reader.ReadUInt32();
+
+				uint mipLoops = Math.Max(1, levelCount);
+
+				uint supercompressionSchemeUint = reader.ReadUInt32();
+				if (!SupercompressionScheme.IsDefined(typeof(SupercompressionScheme), supercompressionSchemeUint))
+				{
+					return (isValid: false, possibleError: $"Cannot turn {supercompressionSchemeUint} into SupercompressionScheme!");
+				}
+
+
+				// Index section
+
+				uint earliestAllowedOffset = ktx2SmallestAllowedOffsetValue + mipLoops*8;
+
+				uint dfdByteOffset = reader.ReadUInt32();
+
+				if (dfdByteOffset < earliestAllowedOffset)
+				{
+					return (isValid: false, possibleError: $"dfdByteOffset {dfdByteOffset} is too small!");
+				}
+
+				uint dfdByteLength = reader.ReadUInt32();
+
+				if (dfdByteLength == 0)
+				{
+					return (isValid: false, possibleError: "dfdByteLength cannot be 0!");
+				}
+
+				uint kvdByteOffset = reader.ReadUInt32();
+
+				if (kvdByteOffset > 0 && kvdByteOffset < dfdByteOffset + dfdByteLength)
+				{
+					return (isValid: false, possibleError: $"kvdByteOffset {kvdByteOffset} cannot be smaller than dfdByteOffset + dfdByteLength {dfdByteOffset} + {dfdByteLength} = {dfdByteOffset + dfdByteLength}!");
+				}
+
+				uint kvdByteLength = reader.ReadUInt32();
+
+				if (kvdByteLength == 0 && kvdByteOffset != 0)
+				{
+					return (isValid: false, possibleError: $"kvdByteLength can only be 0 if kvdByteOffset is also zero!");
+				}
+
+				ulong sgdByteOffset = reader.ReadUInt64();
+
+				if (sgdByteOffset > 0 && sgdByteOffset < kvdByteOffset + kvdByteLength)
+				{
+					return (isValid: false, possibleError: $"sgdByteOffset {sgdByteOffset} cannot be smaller than kvdByteOffset + kvdByteLength {kvdByteOffset} + {kvdByteLength} = {kvdByteOffset + kvdByteLength}!");
+				}
+
+				ulong sgdByteLength = reader.ReadUInt64();
+
+				if (sgdByteLength == 0 && sgdByteOffset != 0)
+				{
+					return (isValid: false, possibleError: $"sgdByteLength can only be 0 if sgdByteOffset is also zero!");
+				}
+
+
+				// Level Index
+
+				
+				LevelIndex[] levelIndexes = new LevelIndex[mipLoops];
+				for (uint u = 0; u < mipLoops; u++)
+				{
+					levelIndexes[(int)u] = new LevelIndex(reader.ReadUInt64(), reader.ReadUInt64(), reader.ReadUInt64());
+				}
+
+
+				// Data Format Descriptor
+
+				uint dfdTotalSize = reader.ReadUInt32();
+
+
+				// Key/Value Data
+
+				Dictionary<string, MetadataValue> metadataDictionary = Ktx2Metadata.ParseMetadata(reader.ReadBytes((int)kvdByteLength));
+
+				// Some additional conditional padding
+				if (sgdByteLength > 0)
+				{
+					int overFromAlign8 = (int)stream.Position % 8;
+					if (overFromAlign8 > 0)
+					{
+						_ = reader.ReadBytes(8 - overFromAlign8);
+					}
 				}
 			}
 		}

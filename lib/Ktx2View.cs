@@ -15,14 +15,14 @@ namespace KtxSharp;
 /// </remark>
 public sealed class Ktx2View
 {
-	private readonly Memory<byte> data;
+	private readonly ReadOnlyMemory<byte> data;
 
 	/// <summary>
 	/// Only constructor
 	/// </summary>
 	/// <param name="input">Memory that contains Ktx2 data as bytes</param>
 	/// <param name="doSafetyChecks">Do safety checks during construction? (default: false)</param>
-	public Ktx2View(Memory<byte> input, bool doSafetyChecks = false)
+	public Ktx2View(ReadOnlyMemory<byte> input, bool doSafetyChecks = false)
 	{
 		this.data = input;
 
@@ -250,7 +250,7 @@ public sealed class Ktx2View
 	/// Bytes of data format descriptor
 	/// </summary>
 	/// <returns></returns>
-	public Memory<byte> GetDataFormatDescriptorRaw()
+	public ReadOnlyMemory<byte> GetDataFormatDescriptorRaw()
 	{
 		int startDataIndex = (int)this.GetDfdByteOffset() + Common.sizeOfUint;
 		int totalSize = (int)this.GetDfdTotalSize() - Common.sizeOfUint;
@@ -272,7 +272,7 @@ public sealed class Ktx2View
 	/// Get bytes of supercompression global data
 	/// </summary>
 	/// <returns></returns>
-	public Memory<byte> GetSupercompressionGlobalDataRaw()
+	public ReadOnlyMemory<byte> GetSupercompressionGlobalDataRaw()
 	{
 		int startDataIndex = (int)this.GetSgdByteOffset();
 		int totalSize = (int)this.GetSgdByteLength();
@@ -285,7 +285,7 @@ public sealed class Ktx2View
 	/// <param name="levelIndex">Zero based index</param>
 	/// <returns>all bytes of certain mip map level</returns>
 	/// <remarks>Zero index [0] has the smallest mip (order is reverse if compared to GetLevelIndexes())</remarks>
-	public Memory<byte> GetLevelImage(int levelIndex)
+	public ReadOnlyMemory<byte> GetLevelImage(int levelIndex)
 	{
 		var orderedList = this.GetLevelIndexes();
 		orderedList.Sort((a,b) => a.byteOffset.CompareTo(b.byteOffset)); // Sort the copy

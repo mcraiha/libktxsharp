@@ -22,22 +22,22 @@ public class Ktx2ViewTests
 		Ktx2View view1 = new Ktx2View(inputBytes1, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes1 = view1.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary1 = view1.GetMetadataDictionary();
-		Memory<byte> supercompressonGlobalDataRaw1 = view1.GetSupercompressionGlobalDataRaw();
+		ReadOnlyMemory<byte> supercompressonGlobalDataRaw1 = view1.GetSupercompressionGlobalDataRaw();
 
 		Ktx2View view2 = new Ktx2View(inputBytes2, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes2 = view2.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary2 = view2.GetMetadataDictionary();
-		Memory<byte> supercompressonGlobalDataRaw2 = view2.GetSupercompressionGlobalDataRaw();
+		ReadOnlyMemory<byte> supercompressonGlobalDataRaw2 = view2.GetSupercompressionGlobalDataRaw();
 
 		Ktx2View view3 = new Ktx2View(inputBytes3, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes3 = view3.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary3 = view3.GetMetadataDictionary();
-		Memory<byte> supercompressonGlobalDataRaw3 = view3.GetSupercompressionGlobalDataRaw();
+		ReadOnlyMemory<byte> supercompressonGlobalDataRaw3 = view3.GetSupercompressionGlobalDataRaw();
 
 		Ktx2View view4 = new Ktx2View(inputBytes4, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes4 = view4.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary4 = view4.GetMetadataDictionary();
-		Memory<byte> supercompressonGlobalDataRaw4 = view4.GetSupercompressionGlobalDataRaw();
+		ReadOnlyMemory<byte> supercompressonGlobalDataRaw4 = view4.GetSupercompressionGlobalDataRaw();
 
 		// Assert
 		Assert.That(view1.GetVkFormatUint(), Is.EqualTo(0));

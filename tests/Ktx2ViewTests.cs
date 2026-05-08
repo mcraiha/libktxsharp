@@ -15,6 +15,8 @@ public class Ktx2ViewTests
 		// Arrange
 		byte[] inputBytes1 = Ktx2Samples.ktx2Sample1;
 		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
+		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validKtx2Sample2Filename);
+		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validKtx2Sample3Filename);
 
 		// Act
 		Ktx2View view1 = new Ktx2View(inputBytes1, doSafetyChecks: true);
@@ -26,6 +28,11 @@ public class Ktx2ViewTests
 		List<LevelIndex> levelIndexes2 = view2.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary2 = view2.GetMetadataDictionary();
 		Memory<byte> supercompressonGlobalDataRaw2 = view2.GetSupercompressionGlobalDataRaw();
+
+		Ktx2View view3 = new Ktx2View(inputBytes3, doSafetyChecks: true);
+		List<LevelIndex> levelIndexes3 = view3.GetLevelIndexes();
+		Dictionary<string, MetadataValue> metadataDictionary3 = view3.GetMetadataDictionary();
+		Memory<byte> supercompressonGlobalDataRaw3 = view3.GetSupercompressionGlobalDataRaw();
 
 		// Assert
 		Assert.That(view1.GetVkFormatUint(), Is.EqualTo(0));
@@ -105,6 +112,77 @@ public class Ktx2ViewTests
 
 		Assert.That(levelIndexes2[0].byteLength, Is.EqualTo(view2.GetLevelImage(0).Length));
 		Assert.That(view2.GetLevelImage(0).ToArray(), Is.EqualTo(new byte[] {0xFF, 0x00, 0x67, 0xE5, 0x01, 0x5D, 0xC2, 0x03, 0x51, 0xA3, 0x07, 0x46,
+																			0x86, 0x0D, 0x3C, 0x6F, 0x14, 0x33, 0x58, 0x1E, 0x2B, 0x46, 0x2A, 0x24,
+																			0xE2, 0x01, 0x5D, 0xC2, 0x03, 0x51, 0xA1, 0x07, 0x46, 0x85, 0x0D, 0x3C,
+																			0x6D, 0x14, 0x33, 0x57, 0x1E, 0x2B, 0x45, 0x2A, 0x23, 0x34, 0x39, 0x1D,
+																			0xC0, 0x03, 0x50, 0xA1, 0x07, 0x45, 0x86, 0x0D, 0x3B, 0x6D, 0x14, 0x33,
+																			0x58, 0x1E, 0x2A, 0x44, 0x2B, 0x23, 0x34, 0x3A, 0x1D, 0x26, 0x4A, 0x17,
+																			0xA1, 0x07, 0x45, 0x85, 0x0D, 0x3C, 0x6C, 0x15, 0x33, 0x56, 0x1F, 0x29,
+																			0x44, 0x2A, 0x23, 0x34, 0x3A, 0x1D, 0x27, 0x4A, 0x16, 0x1B, 0x60, 0x11,
+																			0x83, 0x0D, 0x3B, 0x6C, 0x15, 0x33, 0x56, 0x1F, 0x2A, 0x43, 0x2C, 0x23,
+																			0x33, 0x3A, 0x1D, 0x25, 0x4A, 0x17, 0x1A, 0x5F, 0x11, 0x11, 0x77, 0x0D,
+																			0x6C, 0x16, 0x32, 0x56, 0x20, 0x29, 0x43, 0x2C, 0x22, 0x33, 0x3B, 0x1C,
+																			0x26, 0x4C, 0x17, 0x1A, 0x60, 0x11, 0x11, 0x76, 0x0D, 0x0A, 0x8E, 0x0A,
+																			0x56, 0x1F, 0x29, 0x42, 0x2C, 0x23, 0x33, 0x3A, 0x1C, 0x25, 0x4C, 0x16,
+																			0x1A, 0x60, 0x11, 0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06,
+																			0x42, 0x2C, 0x23, 0x33, 0x3B, 0x1C, 0x25, 0x4C, 0x17, 0x1A, 0x60, 0x11,
+																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
+
+
+		Assert.That(view3.GetVkFormatUint, Is.EqualTo(23));
+		Assert.That(view3.GetVkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(view3.GetTypeSize(), Is.EqualTo(1));
+		Assert.That(view3.GetPixelWidth(), Is.EqualTo(8));
+		Assert.That(view3.GetPixelHeight(), Is.EqualTo(8));
+		Assert.That(view3.GetPixelDepth(), Is.EqualTo(0));
+		Assert.That(view3.GetSupercompressionSchemeUint(), Is.EqualTo(0));
+		Assert.That(view3.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.None));
+
+		Assert.That(view3.GetDfdByteOffset(), Is.EqualTo(0x000000B0));
+		Assert.That(view3.GetDfdByteLength(), Is.EqualTo(0x0000004C));
+
+		Assert.That(view3.GetKvdByteOffset(), Is.EqualTo(0x000000FC));
+		Assert.That(view3.GetKvdByteLength(), Is.EqualTo(0x00000030));
+
+		Assert.That(view3.GetSgdByteOffset(), Is.EqualTo(0x0000000000000000));
+		Assert.That(view3.GetSgdByteLength(), Is.EqualTo(0x0000000000000000));
+
+		Assert.That(levelIndexes3.Count, Is.EqualTo(4));
+		Assert.That(levelIndexes3[0].byteOffset, Is.EqualTo(0x0000000000000174));
+		Assert.That(levelIndexes3[0].byteLength, Is.EqualTo(0x00000000000000C0));
+		Assert.That(levelIndexes3[0].uncompressedByteLength, Is.EqualTo(0x00000000000000C0));
+		Assert.That(levelIndexes3[1].byteOffset, Is.EqualTo(0x0000000000000144));
+		Assert.That(levelIndexes3[1].byteLength, Is.EqualTo(0x0000000000000030));
+		Assert.That(levelIndexes3[1].uncompressedByteLength, Is.EqualTo(0x0000000000000030));
+		Assert.That(levelIndexes3[2].byteOffset, Is.EqualTo(0x0000000000000138));
+		Assert.That(levelIndexes3[2].byteLength, Is.EqualTo(0x000000000000000C));
+		Assert.That(levelIndexes3[2].uncompressedByteLength, Is.EqualTo(0x000000000000000C));
+		Assert.That(levelIndexes3[3].byteOffset, Is.EqualTo(0x000000000000012C));
+		Assert.That(levelIndexes3[3].byteLength, Is.EqualTo(0x0000000000000003));
+		Assert.That(levelIndexes3[3].uncompressedByteLength, Is.EqualTo(0x0000000000000003));
+
+		Assert.That(view3.GetDfdTotalSize(), Is.EqualTo(76));
+		Assert.That(view3.GetDataFormatDescriptorRaw().Length, Is.EqualTo(76 - Common.sizeOfUint));
+
+		Assert.That(metadataDictionary3.Count, Is.EqualTo(1));
+		Assert.That(metadataDictionary3.ContainsKey("KTXorientation"), Is.False);
+		Assert.That(metadataDictionary3.ContainsKey("KTXwriter"), Is.True);
+		Assert.That(metadataDictionary3["KTXwriter"].isString, Is.True);
+		Assert.That(metadataDictionary3["KTXwriter"].stringValue, Is.EqualTo("ktx create v4.4.2 / libktx v4.4.2"));
+
+		Assert.That(view3.GetSgdByteLength(), Is.EqualTo(supercompressonGlobalDataRaw3.Length));
+
+		Assert.That(levelIndexes3[0].byteLength, Is.EqualTo(view3.GetLevelImage(3).Length));
+		Assert.That(levelIndexes3[1].byteLength, Is.EqualTo(view3.GetLevelImage(2).Length));
+		Assert.That(levelIndexes3[2].byteLength, Is.EqualTo(view3.GetLevelImage(1).Length));
+		Assert.That(levelIndexes3[3].byteLength, Is.EqualTo(view3.GetLevelImage(0).Length));
+		Assert.That(view3.GetLevelImage(0).ToArray(), Is.EqualTo(new byte[] {0x52, 0x38, 0x27}));
+		Assert.That(view3.GetLevelImage(1).ToArray(), Is.EqualTo(new byte[] {0x86, 0x18, 0x3B, 0x4E, 0x33, 0x26, 0x4D, 0x34, 0x25, 0x27, 0x61, 0x16}));
+		Assert.That(view3.GetLevelImage(2).ToArray(), Is.EqualTo(new byte[] {0xCD, 0x09, 0x55, 0x9E, 0x0C, 0x44, 0x64, 0x1D, 0x2F, 0x4D, 0x32, 0x26,
+																			0x9C, 0x0C, 0x44, 0x72, 0x11, 0x34, 0x43, 0x29, 0x23, 0x32, 0x43, 0x1B,
+																			0x62, 0x1E, 0x2E, 0x42, 0x2B, 0x22, 0x20, 0x50, 0x15, 0x17, 0x72, 0x0F,
+																			0x4B, 0x34, 0x25, 0x31, 0x44, 0x1B, 0x17, 0x73, 0x0F, 0x10, 0x9D, 0x0B}));
+		Assert.That(view3.GetLevelImage(3).ToArray(), Is.EqualTo(new byte[] {0xFF, 0x00, 0x67, 0xE5, 0x01, 0x5D, 0xC2, 0x03, 0x51, 0xA3, 0x07, 0x46,
 																			0x86, 0x0D, 0x3C, 0x6F, 0x14, 0x33, 0x58, 0x1E, 0x2B, 0x46, 0x2A, 0x24,
 																			0xE2, 0x01, 0x5D, 0xC2, 0x03, 0x51, 0xA1, 0x07, 0x46, 0x85, 0x0D, 0x3C,
 																			0x6D, 0x14, 0x33, 0x57, 0x1E, 0x2B, 0x45, 0x2A, 0x23, 0x34, 0x39, 0x1D,

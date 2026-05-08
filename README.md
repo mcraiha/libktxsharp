@@ -1,6 +1,6 @@
 # libktxsharp
 
-C# library for handling [KTX File Format](https://www.khronos.org/opengles/sdk/tools/KTX/file_format_spec/). Only Version 1 is supported, so Version 2 is **NOT** supported.
+Managed .NET 10/.NET 8 library for handling [KTX File Format](https://registry.khronos.org/KTX/specs/1.0/ktxspec.v1.html) and [KTX 2.0 file format](https://github.khronos.org/KTX-Specification/ktxspec.v2.html).
 
 ## Build status
 
@@ -12,12 +12,14 @@ C# library for handling [KTX File Format](https://www.khronos.org/opengles/sdk/t
 
 ## Why
 
-Because KTX specs are public and I need something like this for my upcoming projects
+Because KTX specs are public and I needed something like this for my canceled project
 
 ## How to use
 
 1. Get nuget, build .dll or include [lib folder](lib) in your project
-2. Use following code example
+2. Use following code examples
+
+**KTX**
 ```csharp
 using KtxSharp;
 
@@ -32,11 +34,37 @@ using (MemoryStream ms = new MemoryStream(ktxBytes))
 Console.WriteLine(ktxStructure.header.pixelWidth);
 ```
 
+**KTX2** (standalone classes)
+```csharp
+using KtxSharp;
+
+byte[] ktx2Bytes = File.ReadAllBytes("myImage.ktx2");
+
+Ktx2Structure ktx2Structure = null;
+using (MemoryStream ms = new MemoryStream(ktx2Bytes))
+{
+	ktx2Structure = Ktx2Loader.LoadInput(ms);
+}
+
+Console.WriteLine(ktx2Structure.ktx2Header.pixelWidth);
+```
+
+**KTX2** (view over existing memory)
+```csharp
+using KtxSharp;
+
+byte[] ktx2Bytes = File.ReadAllBytes("myImage.ktx2");
+
+Ktx2View ktx2View = new Ktx2View(ktx2Bytes);
+
+Console.WriteLine(ktx2View.GetPixelWidth());
+```
+
 ## How do I build this
 
 ### Requirements
 
-Dotnet core 2.0 (or newer) environment
+.NET 8 (or newer) environment
 
 ### Build .dll
 

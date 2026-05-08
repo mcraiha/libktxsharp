@@ -297,12 +297,28 @@ public static class KtxValidators
 
 
 				// Level Index
-
+				ulong largestOffsetAndLength = Math.Max(Math.Max(dfdByteOffset + dfdByteLength, kvdByteOffset + kvdByteLength), sgdByteOffset + sgdByteLength);
 				
 				LevelIndex[] levelIndexes = new LevelIndex[mipLoops];
 				for (uint u = 0; u < mipLoops; u++)
 				{
 					levelIndexes[(int)u] = new LevelIndex(reader.ReadUInt64(), reader.ReadUInt64(), reader.ReadUInt64());
+					if (supercompressionSchemeUint == 0 && levelIndexes[(int)u].byteLength != levelIndexes[(int)u].uncompressedByteLength)
+					{
+						return (isValid: false, possibleError: $"Level index [{u}] has mismatch between byteLength and uncompressedByteLength!");
+					}
+					else if (supercompressionSchemeUint == 1 && levelIndexes[(int)u].uncompressedByteLength != 0)
+					{
+						return (isValid: false, possibleError: "When supercompressionScheme is BasisLZ, the uncompressedByteLength must be 0!");
+					}
+					else if (levelIndexes[(int)u].byteOffset < largestOffsetAndLength)
+					{
+						return (isValid: false, possibleError: $"Level index [{u}] has too small offset!");
+					}
+					else if (levelIndexes[(int)u].byteLength == 0)
+					{
+						return (isValid: false, possibleError: $"Level index [{u}] has byte length of 0!");
+					}
 				}
 
 

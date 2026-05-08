@@ -219,7 +219,7 @@ public sealed class Ktx2View
 	/// <remarks>Zero index [0] has the largest mip</remarks>
 	public List<LevelIndex> GetLevelIndexes()
 	{
-		uint mipLoops = Math.Max(1, this.GetLayerCount());
+		uint mipLoops = Math.Max(1, this.GetLevelCount());
 		List<LevelIndex> returnValues = new List<LevelIndex>((int)mipLoops);
 
 		int startDataIndex = 80;

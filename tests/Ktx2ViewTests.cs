@@ -34,6 +34,11 @@ public class Ktx2ViewTests
 		Dictionary<string, MetadataValue> metadataDictionary3 = view3.GetMetadataDictionary();
 		Memory<byte> supercompressonGlobalDataRaw3 = view3.GetSupercompressionGlobalDataRaw();
 
+		Ktx2View view4 = new Ktx2View(inputBytes4, doSafetyChecks: true);
+		List<LevelIndex> levelIndexes4 = view4.GetLevelIndexes();
+		Dictionary<string, MetadataValue> metadataDictionary4 = view4.GetMetadataDictionary();
+		Memory<byte> supercompressonGlobalDataRaw4 = view4.GetSupercompressionGlobalDataRaw();
+
 		// Assert
 		Assert.That(view1.GetVkFormatUint(), Is.EqualTo(0));
 		Assert.That(view1.GetVkFormat(), Is.EqualTo(VkFormat.VK_FORMAT_UNDEFINED));
@@ -76,8 +81,8 @@ public class Ktx2ViewTests
 		Assert.That(view1.GetLevelImage(0).ToArray(), Is.EqualTo(new byte[] {0x4E, 0x0E, 0x04}));
 
 
-		Assert.That(view2.GetVkFormatUint, Is.EqualTo(23));
-		Assert.That(view2.GetVkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(view2.GetVkFormatUint(), Is.EqualTo(23));
+		Assert.That(view2.GetVkFormat(), Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
 		Assert.That(view2.GetTypeSize(), Is.EqualTo(1));
 		Assert.That(view2.GetPixelWidth(), Is.EqualTo(8));
 		Assert.That(view2.GetPixelHeight(), Is.EqualTo(8));
@@ -129,8 +134,8 @@ public class Ktx2ViewTests
 																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
 
 
-		Assert.That(view3.GetVkFormatUint, Is.EqualTo(23));
-		Assert.That(view3.GetVkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(view3.GetVkFormatUint(), Is.EqualTo(23));
+		Assert.That(view3.GetVkFormat(), Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
 		Assert.That(view3.GetTypeSize(), Is.EqualTo(1));
 		Assert.That(view3.GetPixelWidth(), Is.EqualTo(8));
 		Assert.That(view3.GetPixelHeight(), Is.EqualTo(8));
@@ -198,5 +203,47 @@ public class Ktx2ViewTests
 																			0x1A, 0x60, 0x11, 0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06,
 																			0x42, 0x2C, 0x23, 0x33, 0x3B, 0x1C, 0x25, 0x4C, 0x17, 0x1A, 0x60, 0x11,
 																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
+
+
+		Assert.That(view4.GetVkFormatUint(), Is.EqualTo(23));
+		Assert.That(view4.GetVkFormat(), Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(view4.GetTypeSize(), Is.EqualTo(1));
+		Assert.That(view4.GetPixelWidth(), Is.EqualTo(8));
+		Assert.That(view4.GetPixelHeight(), Is.EqualTo(8));
+		Assert.That(view4.GetPixelDepth(), Is.EqualTo(0));
+		Assert.That(view4.GetSupercompressionSchemeUint(), Is.EqualTo(3));
+		Assert.That(view4.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.ZLIB));
+
+		Assert.That(view4.GetDfdByteOffset(), Is.EqualTo(0x00000068));
+		Assert.That(view4.GetDfdByteLength(), Is.EqualTo(0x0000004C));
+
+		Assert.That(view4.GetKvdByteOffset(), Is.EqualTo(0x000000B4));
+		Assert.That(view4.GetKvdByteLength(), Is.EqualTo(0x00000050));
+
+		Assert.That(view4.GetSgdByteOffset(), Is.EqualTo(0x0000000000000000));
+		Assert.That(view4.GetSgdByteLength(), Is.EqualTo(0x0000000000000000));
+
+		Assert.That(levelIndexes4.Count, Is.EqualTo(1));
+		Assert.That(levelIndexes4[0].byteOffset, Is.EqualTo(0x0000000000000104));
+		Assert.That(levelIndexes4[0].byteLength, Is.EqualTo(0x0000000000000015));
+		Assert.That(levelIndexes4[0].uncompressedByteLength, Is.EqualTo(0x00000000000000C0));
+
+		Assert.That(view4.GetDfdTotalSize(), Is.EqualTo(76));
+		Assert.That(view4.GetDataFormatDescriptorRaw().Length, Is.EqualTo(76 - Common.sizeOfUint));
+
+		Assert.That(metadataDictionary4.Count, Is.EqualTo(2));
+		Assert.That(metadataDictionary4.ContainsKey("KTXwriterScParams"), Is.True);
+		Assert.That(metadataDictionary4["KTXwriterScParams"].isString, Is.True);
+		Assert.That(metadataDictionary4["KTXwriterScParams"].stringValue, Is.EqualTo("--zlib 9"));
+		Assert.That(metadataDictionary4.ContainsKey("KTXwriter"), Is.True);
+		Assert.That(metadataDictionary4["KTXwriter"].isString, Is.True);
+		Assert.That(metadataDictionary4["KTXwriter"].stringValue, Is.EqualTo("ktx create v4.4.2 / libktx v4.4.2"));
+
+		Assert.That(view4.GetSgdByteLength(), Is.EqualTo(supercompressonGlobalDataRaw4.Length));
+
+		Assert.That(view4.GetLevelIndexes().Count, Is.EqualTo(1));
+		Assert.That(view4.GetLevelIndexes()[0].byteLength, Is.EqualTo(view4.GetLevelImage(0).Length));
+		Assert.That(view4.GetLevelImage(0).ToArray(), Is.EqualTo(new byte[] {0x78, 0x01, 0xD5, 0xC0, 0x81, 0x00, 0x00, 0x00, 0x00, 0x80, 0x20, 0x7F,
+																			0xEA, 0xE6, 0x38, 0xDE, 0x02, 0x1C, 0x98, 0xBF, 0x41}));
 	}
 }

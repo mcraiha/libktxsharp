@@ -9,6 +9,35 @@ namespace Tests;
 public class Ktx2LoaderTests
 {
 	[Test]
+	public void CheckIfInputIsValidWithValidSamplesTest()
+	{
+		// Arrange
+		byte[] inputBytes1 = Ktx2Samples.ktx2Sample1;
+		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
+		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validKtx2Sample2Filename);
+		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validKtx2Sample3Filename);
+
+		// Act
+		(bool isValid1, string possibleError1) = Ktx2Loader.CheckIfInputIsValid(new MemoryStream(inputBytes1));
+		(bool isValid2, string possibleError2) = Ktx2Loader.CheckIfInputIsValid(new MemoryStream(inputBytes2));
+		(bool isValid3, string possibleError3) = Ktx2Loader.CheckIfInputIsValid(new MemoryStream(inputBytes3));
+		(bool isValid4, string possibleError4) = Ktx2Loader.CheckIfInputIsValid(new MemoryStream(inputBytes4));
+
+		// Assert
+		Assert.That(isValid1, Is.True);
+		Assert.That(possibleError1, Is.EqualTo(""));
+
+		Assert.That(isValid2, Is.True);
+		Assert.That(possibleError2, Is.EqualTo(""));
+
+		Assert.That(isValid3, Is.True);
+		Assert.That(possibleError3, Is.EqualTo(""));
+
+		Assert.That(isValid4, Is.True);
+		Assert.That(possibleError4, Is.EqualTo(""));
+	}
+
+	[Test]
 	public void CheckWithValidKtx2SamplesTest()
 	{
 		// Arrange

@@ -32,12 +32,11 @@ public static class Ktx2Loader
 			return (isValid: false, possibleError: possibleIdentifierError);
 		}
 
-		/*
 		(bool isHeaderValid, string possibleHeaderError) = KtxValidators.ValidateKtx2HeaderData(stream);
 		if (!isHeaderValid)
 		{
 			return (isValid: false, possibleError: possibleHeaderError);
-		}*/
+		}
 
 		stream.Position = streamPos;
 		

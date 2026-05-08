@@ -326,6 +326,8 @@ public static class KtxValidators
 
 				uint dfdTotalSize = reader.ReadUInt32();
 
+				_ = reader.ReadBytes((int)dfdTotalSize - Common.sizeOfUint);
+
 
 				// Key/Value Data
 

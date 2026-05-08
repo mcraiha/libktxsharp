@@ -33,8 +33,14 @@ public sealed class Ktx2View
 				throw new InvalidDataException("Invalid Ktx2 identifier");
 			}
 
-
-			// TODO: Add more of these
+			using (MemoryStream ms = new MemoryStream(this.data.Slice(Common.ktx2ValidIdentifier.Length).ToArray()))
+			{
+				(bool isHeaderValid, string possibleHeaderError) = KtxValidators.ValidateKtx2HeaderData(ms);
+				if (!isHeaderValid)
+				{
+					throw new InvalidDataException(possibleHeaderError);
+				}
+			} 
 		}
 	}
 

@@ -10,6 +10,8 @@
     <IncludeSource>true</IncludeSource>
     <PackageProjectUrl>https://github.com/mcraiha/libktxsharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mcraiha/libktxsharp.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
@@ -19,5 +21,14 @@
   <ItemGroup>
     <None Include="../nuget-readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
+
+  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
+    <PrivateAssets>all</PrivateAssets>
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+  </PackageReference>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
 
 </Project>

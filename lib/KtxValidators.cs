@@ -45,11 +45,11 @@ public static class KtxValidators
 	}
 
 	/// <summary>
-	/// Validate identifier
+	/// Validate KTX identifier
 	/// </summary>
 	/// <param name="stream">Stream for reading</param>
 	/// <returns>Tuple that tells if stream has valid identifier, and possible error</returns>
-	public static (bool isValid, string possibleError) ValidateIdentifier(Stream stream)
+	public static (bool isValid, string possibleError) ValidateKtx1Identifier(Stream stream)
 	{
 		try
 		{
@@ -59,11 +59,38 @@ public static class KtxValidators
 				Span<byte> tempIdentifier = stackalloc byte[Common.ktx1ValidIdentifier.Length];
 				_ = reader.Read(tempIdentifier);
 
-				if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
+				if (tempIdentifier.SequenceEqual(Common.ktx1ValidIdentifier.Span))
 				{
 					return (isValid: true, possibleError: "");
 				}
-				else if (tempIdentifier.SequenceEqual(Common.ktx1ValidIdentifier.Span))
+				else
+				{
+					return (isValid: false, possibleError: "Identifier does not match requirements!");
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			return (isValid: false, e.ToString());
+		}
+	}
+
+	/// <summary>
+	/// Validate KTX2 identifier
+	/// </summary>
+	/// <param name="stream">Stream for reading</param>
+	/// <returns>Tuple that tells if stream has valid identifier, and possible error</returns>
+	public static (bool isValid, string possibleError) ValidateKtx2Identifier(Stream stream)
+	{
+		try
+		{
+			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
+			{
+				// TODO: Use ReadExactly when .NET 8 is support is dropped
+				Span<byte> tempIdentifier = stackalloc byte[Common.ktx2ValidIdentifier.Length];
+				_ = reader.Read(tempIdentifier);
+
+				if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
 				{
 					return (isValid: true, possibleError: "");
 				}

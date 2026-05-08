@@ -26,12 +26,13 @@ public static class Ktx2Loader
 		// We have to duplicate the data, since we have to both validate it and keep it for texture data validation step
 		long streamPos = stream.Position;
 
-		/*(bool isIdentifierValid, string possibleIdentifierError) = KtxValidators.ValidateIdentifier(stream);
+		(bool isIdentifierValid, string possibleIdentifierError) = KtxValidators.ValidateKtx2Identifier(stream);
 		if (!isIdentifierValid)
 		{
 			return (isValid: false, possibleError: possibleIdentifierError);
 		}
 
+		/*
 		(bool isHeaderValid, string possibleHeaderError) = KtxValidators.ValidateKtx2HeaderData(stream);
 		if (!isHeaderValid)
 		{

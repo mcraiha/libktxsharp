@@ -17,12 +17,12 @@ public class Ktx2ViewTests
 		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
 
 		// Act
-		Ktx2View view1 = new Ktx2View(inputBytes1);
+		Ktx2View view1 = new Ktx2View(inputBytes1, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes1 = view1.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary1 = view1.GetMetadataDictionary();
 		Memory<byte> supercompressonGlobalDataRaw1 = view1.GetSupercompressionGlobalDataRaw();
 
-		Ktx2View view2 = new Ktx2View(inputBytes2);
+		Ktx2View view2 = new Ktx2View(inputBytes2, doSafetyChecks: true);
 		List<LevelIndex> levelIndexes2 = view2.GetLevelIndexes();
 		Dictionary<string, MetadataValue> metadataDictionary2 = view2.GetMetadataDictionary();
 		Memory<byte> supercompressonGlobalDataRaw2 = view2.GetSupercompressionGlobalDataRaw();

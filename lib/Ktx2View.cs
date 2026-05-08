@@ -28,7 +28,13 @@ public sealed class Ktx2View
 
 		if (doSafetyChecks)
 		{
-			// TODO: Add these
+			if (!this.data.Slice(0, Common.ktx2ValidIdentifier.Length).Span.SequenceEqual(Common.ktx2ValidIdentifier.Span))
+			{
+				throw new InvalidDataException("Invalid Ktx2 identifier");
+			}
+
+
+			// TODO: Add more of these
 		}
 	}
 

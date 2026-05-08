@@ -252,12 +252,12 @@ public readonly struct LevelIndex
 	/// <summary>
 	/// Compressed length in bytes
 	/// </summary>
-    public readonly ulong byteLength;
+	public readonly ulong byteLength;
 
 	/// <summary>
 	/// Uncompressed length in bytes
 	/// </summary>
-    public readonly ulong uncompressedByteLength;
+	public readonly ulong uncompressedByteLength;
 
 	/// <summary>
 	/// Only constructor

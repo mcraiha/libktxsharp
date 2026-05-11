@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.Frozen;
 
 // Common global values
 namespace KtxSharp;
@@ -77,7 +78,7 @@ public static class Common
 	/// <summary>
 	/// GlType to size
 	/// </summary>
-	public static readonly Dictionary<GlDataType, uint> GlTypeToSize = new Dictionary<GlDataType, uint>()
+	public static readonly FrozenDictionary<GlDataType, uint> GlTypeToSize = new Dictionary<GlDataType, uint>()
 	{
 		{ GlDataType.Compressed, 1 },
 		{ GlDataType.GL_BYTE, 1 },
@@ -88,7 +89,7 @@ public static class Common
 
 		{ GlDataType.GL_FLOAT, 4 },
 		{ GlDataType.GL_FIXED, 4 }
-	};
+	}.ToFrozenDictionary();
 }
 
 /// <summary>

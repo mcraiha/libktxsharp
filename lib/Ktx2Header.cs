@@ -20,7 +20,7 @@ public sealed class Ktx2Header
 	public readonly uint vkFormatUint;
 
 	/// <summary>
-	/// specifies the size of the data type in bytes used to upload the data to a graphics API
+	/// Specifies the size of the data type in bytes used to upload the data to a graphics API
 	/// </summary>
 	public readonly uint typeSize;
 
@@ -142,6 +142,11 @@ public sealed class Ktx2Header
 	public readonly SupercompressionScheme supercompressionScheme;
 
 	/// <summary>
+	/// Type of the texture
+	/// </summary>
+	public readonly TextureTypeKtx2 textureType;
+
+	/// <summary>
 	/// Ktx2Header constructor
 	/// </summary>
 	/// <param name="stream">Stream for reading (must be seekable stream)</param>
@@ -179,6 +184,8 @@ public sealed class Ktx2Header
 			this.faceCount = reader.ReadUInt32();
 
 			this.levelCount = reader.ReadUInt32();
+
+			this.textureType = Common.DetectKtx2Type(this.pixelWidth, this.pixelHeight, this.pixelDepth, this.layerCount, this.faceCount, this.levelCount);
 
 			this.supercompressionSchemeUint = reader.ReadUInt32();
 			if (SupercompressionScheme.IsDefined(typeof(SupercompressionScheme), this.supercompressionSchemeUint))

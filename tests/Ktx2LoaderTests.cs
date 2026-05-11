@@ -109,6 +109,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.pixelDepth, Is.EqualTo(0));
 		Assert.That(ktx2Header1.supercompressionSchemeUint, Is.EqualTo(1));
 		Assert.That(ktx2Header1.supercompressionScheme, Is.EqualTo(SupercompressionScheme.BasisLZ));
+		Assert.That(ktx2Header1.textureType, Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(ktx2Header1.dfdByteOffset, Is.EqualTo(0x00000068));
 		Assert.That(ktx2Header1.dfdByteLength, Is.EqualTo(0x0000003C));
@@ -151,6 +152,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header2.pixelDepth, Is.EqualTo(0));
 		Assert.That(ktx2Header2.supercompressionSchemeUint, Is.EqualTo(0));
 		Assert.That(ktx2Header2.supercompressionScheme, Is.EqualTo(SupercompressionScheme.None));
+		Assert.That(ktx2Header2.textureType, Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(ktx2Header2.dfdByteOffset, Is.EqualTo(0x00000068));
 		Assert.That(ktx2Header2.dfdByteLength, Is.EqualTo(0x0000004C));
@@ -205,6 +207,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header3.pixelDepth, Is.EqualTo(0));
 		Assert.That(ktx2Header3.supercompressionSchemeUint, Is.EqualTo(0));
 		Assert.That(ktx2Header3.supercompressionScheme, Is.EqualTo(SupercompressionScheme.None));
+		Assert.That(ktx2Header3.textureType, Is.EqualTo(TextureTypeKtx2.Basic2DWithMipmaps));
 
 		Assert.That(ktx2Header3.dfdByteOffset, Is.EqualTo(0x000000B0));
 		Assert.That(ktx2Header3.dfdByteLength, Is.EqualTo(0x0000004C));
@@ -277,6 +280,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header4.pixelDepth, Is.EqualTo(0));
 		Assert.That(ktx2Header4.supercompressionSchemeUint, Is.EqualTo(3));
 		Assert.That(ktx2Header4.supercompressionScheme, Is.EqualTo(SupercompressionScheme.ZLIB));
+		Assert.That(ktx2Header4.textureType, Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(ktx2Header4.dfdByteOffset, Is.EqualTo(0x00000068));
 		Assert.That(ktx2Header4.dfdByteLength, Is.EqualTo(0x0000004C));

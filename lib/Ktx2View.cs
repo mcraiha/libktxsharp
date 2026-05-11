@@ -158,6 +158,15 @@ public sealed class Ktx2View
 	}
 
 	/// <summary>
+	/// Get texture type
+	/// </summary>
+	/// <returns>TextureTypeKtx2</returns>
+	public TextureTypeKtx2 GetTextureType()
+	{
+		return Common.DetectKtx2Type(this.GetPixelWidth(), this.GetPixelHeight(), this.GetPixelDepth(), this.GetLayerCount(), this.GetFaceCount(), this.GetLevelCount());
+	}
+
+	/// <summary>
 	/// The offset from the start of the file to the dfdTotalSize field of the Data Format Descriptor
 	/// </summary>
 	/// <returns></returns>

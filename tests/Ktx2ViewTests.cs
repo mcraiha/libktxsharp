@@ -48,6 +48,7 @@ public class Ktx2ViewTests
 		Assert.That(view1.GetPixelDepth(), Is.EqualTo(0));
 		Assert.That(view1.GetSupercompressionSchemeUint(), Is.EqualTo(1));
 		Assert.That(view1.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.BasisLZ));
+		Assert.That(view1.GetTextureType(), Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(view1.GetDfdByteOffset(), Is.EqualTo(0x00000068));
 		Assert.That(view1.GetDfdByteLength(), Is.EqualTo(0x0000003C));
@@ -89,6 +90,7 @@ public class Ktx2ViewTests
 		Assert.That(view2.GetPixelDepth(), Is.EqualTo(0));
 		Assert.That(view2.GetSupercompressionSchemeUint(), Is.EqualTo(0));
 		Assert.That(view2.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.None));
+		Assert.That(view2.GetTextureType(), Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(view2.GetDfdByteOffset(), Is.EqualTo(0x00000068));
 		Assert.That(view2.GetDfdByteLength(), Is.EqualTo(0x0000004C));
@@ -142,6 +144,7 @@ public class Ktx2ViewTests
 		Assert.That(view3.GetPixelDepth(), Is.EqualTo(0));
 		Assert.That(view3.GetSupercompressionSchemeUint(), Is.EqualTo(0));
 		Assert.That(view3.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.None));
+		Assert.That(view3.GetTextureType(), Is.EqualTo(TextureTypeKtx2.Basic2DWithMipmaps));
 
 		Assert.That(view3.GetDfdByteOffset(), Is.EqualTo(0x000000B0));
 		Assert.That(view3.GetDfdByteLength(), Is.EqualTo(0x0000004C));
@@ -213,6 +216,7 @@ public class Ktx2ViewTests
 		Assert.That(view4.GetPixelDepth(), Is.EqualTo(0));
 		Assert.That(view4.GetSupercompressionSchemeUint(), Is.EqualTo(3));
 		Assert.That(view4.GetSupercompressionScheme(), Is.EqualTo(SupercompressionScheme.ZLIB));
+		Assert.That(view4.GetTextureType(), Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
 
 		Assert.That(view4.GetDfdByteOffset(), Is.EqualTo(0x00000068));
 		Assert.That(view4.GetDfdByteLength(), Is.EqualTo(0x0000004C));

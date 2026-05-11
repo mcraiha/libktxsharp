@@ -90,6 +90,63 @@ public static class Common
 		{ GlDataType.GL_FLOAT, 4 },
 		{ GlDataType.GL_FIXED, 4 }
 	}.ToFrozenDictionary();
+
+	/// <summary>
+	/// Detect the KTX2 texture type from given parameters
+	/// </summary>
+	/// <param name="pixelWidth">Pixel width</param>
+	/// <param name="pixelHeight">Pixel height</param>
+	/// <param name="pixelDepth">Pixel depth</param>
+	/// <param name="layerCount">Layer count</param>
+	/// <param name="faceCount">Face count</param>
+	/// <param name="levelCount">Level count</param>
+	/// <returns>TextureTypeKtx2</returns>
+	/// <remarks>See https://github.khronos.org/KTX-Specification/ktxspec.v2.html#_texture_type</remarks>
+	public static TextureTypeKtx2 DetectKtx2Type(uint pixelWidth, uint pixelHeight, uint pixelDepth, uint layerCount, uint faceCount, uint levelCount)
+	{
+		if (pixelWidth > 0 && pixelHeight == 0 && pixelDepth == 0 && layerCount == 0 && faceCount == 1)
+		{
+			// 1D
+			return levelCount > 1 ? TextureTypeKtx2.Basic1DWithMipmaps : TextureTypeKtx2.Basic1DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth == 0 && layerCount == 0 && faceCount == 1)
+		{
+			// 2D
+			return levelCount > 1 ? TextureTypeKtx2.Basic2DWithMipmaps : TextureTypeKtx2.Basic2DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth > 0 && layerCount == 0 && faceCount == 1)
+		{
+			// 3D
+			return levelCount > 1 ? TextureTypeKtx2.Basic3DWithMipmaps : TextureTypeKtx2.Basic3DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth == 0 && layerCount == 0 && faceCount == 6)
+		{
+			// Cubemap
+			return levelCount > 1 ? TextureTypeKtx2.BasicCubemapWithMipmaps : TextureTypeKtx2.BasicCubemapNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight == 0 && pixelDepth == 0 && layerCount > 0 && faceCount == 1)
+		{
+			// 1D array
+			return levelCount > 1 ? TextureTypeKtx2.Array1DWithMipmaps : TextureTypeKtx2.Array1DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth == 0 && layerCount > 0 && faceCount == 1)
+		{
+			// 2D array
+			return levelCount > 1 ? TextureTypeKtx2.Array2DWithMipmaps : TextureTypeKtx2.Array2DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth > 0 && layerCount > 0 && faceCount == 1)
+		{
+			// 3D array
+			return levelCount > 1 ? TextureTypeKtx2.Array3DWithMipmaps : TextureTypeKtx2.Array3DNoMipmaps;
+		}
+		else if (pixelWidth > 0 && pixelHeight > 0 && pixelDepth == 0 && layerCount > 0 && faceCount == 6)
+		{
+			// Cubemap array
+			return levelCount > 1 ? TextureTypeKtx2.ArrayCubemapWithMipmaps : TextureTypeKtx2.ArrayCubemapNoMipmaps;
+		}
+
+		return TextureTypeKtx2.NotKnown;
+	}
 }
 
 /// <summary>
@@ -510,4 +567,95 @@ public enum TextureTypeBasic
 	/// Basic 1d with mip maps
 	/// </summary>
 	Basic1DWithMipmaps = 6,
+}
+
+/// <summary>
+/// Texture type (KTX2)
+/// </summary>
+public enum TextureTypeKtx2 : uint
+{
+	/// <summary>
+	/// Basic 2d no mip maps
+	/// </summary>
+	Basic2DNoMipmaps = 1,
+
+	/// <summary>
+	/// Basic 2d with mip maps
+	/// </summary>
+	Basic2DWithMipmaps = 2,
+
+	/// <summary>
+	/// Basic 3d no mip maps
+	/// </summary>
+	Basic3DNoMipmaps = 3,
+
+	/// <summary>
+	/// Basic 3d with mip maps
+	/// </summary>
+	Basic3DWithMipmaps = 4,
+
+	/// <summary>
+	/// Basic 1d no mip maps
+	/// </summary>
+	Basic1DNoMipmaps = 5,
+
+	/// <summary>
+	/// Basic 1d with mip maps
+	/// </summary>
+	Basic1DWithMipmaps = 6,
+
+	/// <summary>
+	/// Basic Cubemap no mip maps
+	/// </summary>
+	BasicCubemapNoMipmaps = 7,
+
+	/// <summary>
+	/// Basic Cubemap with mip maps
+	/// </summary>
+	BasicCubemapWithMipmaps = 8,
+
+	/// <summary>
+	/// Array 2d no mip maps
+	/// </summary>
+	Array2DNoMipmaps = 9,
+
+	/// <summary>
+	/// Array 2d with mip maps
+	/// </summary>
+	Array2DWithMipmaps = 10,
+
+	/// <summary>
+	/// Array 3d no mip maps
+	/// </summary>
+	Array3DNoMipmaps = 11,
+
+	/// <summary>
+	/// Array 3d with mip maps
+	/// </summary>
+	Array3DWithMipmaps = 12,
+
+	/// <summary>
+	/// Array 1d no mip maps
+	/// </summary>
+	Array1DNoMipmaps = 13,
+
+	/// <summary>
+	/// Array 1d with mip maps
+	/// </summary>
+	Array1DWithMipmaps = 14,
+
+	/// <summary>
+	/// Array Cubemap no mip maps
+	/// </summary>
+	ArrayCubemapNoMipmaps = 15,
+
+	/// <summary>
+	/// Array Cubemap with mip maps
+	/// </summary>
+	ArrayCubemapWithMipmaps = 16,
+
+	/// <summary>
+	/// Custom value for situation where parser cannot identify format
+	/// </summary>
+	NotKnown = 0xFFFF,
 }

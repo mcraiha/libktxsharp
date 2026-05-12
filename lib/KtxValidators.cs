@@ -211,6 +211,11 @@ public static class KtxValidators
 
 				VkFormat vkFormat = (VkFormat)vkFormatUint;
 
+				if (Common.prohibitedFormats.Contains(vkFormat))
+				{
+					return (isValid: false, possibleError: $"The VkFormat {vkFormat} is in prohibited formats list!");
+				}
+
 				uint typeSize = reader.ReadUInt32();
 
 				if (vkFormat == VkFormat.VK_FORMAT_UNDEFINED && typeSize != 1)

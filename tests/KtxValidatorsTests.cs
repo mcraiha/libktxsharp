@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using KtxSharp;
+using System;
 using System.IO;
+using System.Linq;
 
 namespace Tests;
 
@@ -59,17 +61,22 @@ public class KtxValidatorsTests
 	{
 		// Arrange
 		MemoryStream msIncorrectVkFormat = new MemoryStream(new byte[] { 0xFF, 0xFF, 0xFF, 0xFE });
+		MemoryStream msProhibitedVkFormat = new MemoryStream(BitConverter.GetBytes((uint)Common.prohibitedFormats.First()));
 		MemoryStream msTypesizeMismatch = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 		MemoryStream msPixelWidthZero = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 
 		// Act
 		var errorIncorrectVkFormat = KtxValidators.ValidateKtx2HeaderData(msIncorrectVkFormat);
+		var errorProhibitedVkFormat = KtxValidators.ValidateKtx2HeaderData(msProhibitedVkFormat);
 		var errorTypesizeMismatch = KtxValidators.ValidateKtx2HeaderData(msTypesizeMismatch);
 		var errorPixelWidthZero = KtxValidators.ValidateKtx2HeaderData(msPixelWidthZero);
 
 		// Assert
 		Assert.That(errorIncorrectVkFormat.isValid, Is.False);
 		Assert.That(errorIncorrectVkFormat.possibleError.Contains("into VkFormat!"), Is.True);
+
+		Assert.That(errorProhibitedVkFormat.isValid, Is.False);
+		Assert.That(errorProhibitedVkFormat.possibleError, Is.EqualTo($"The VkFormat {Common.prohibitedFormats.First()} is in prohibited formats list!"));
 
 		Assert.That(errorTypesizeMismatch.isValid, Is.False);
 		Assert.That(errorTypesizeMismatch.possibleError, Is.EqualTo("VK_FORMAT_UNDEFINED and typeSize 0 is not a valid combination!"));

@@ -64,12 +64,14 @@ public class KtxValidatorsTests
 		MemoryStream msProhibitedVkFormat = new MemoryStream(BitConverter.GetBytes((uint)Common.prohibitedFormats.First()));
 		MemoryStream msTypesizeMismatch = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 		MemoryStream msPixelWidthZero = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+		MemoryStream msPixelWidthHeightCubeMismatch = new MemoryStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00 });
 
 		// Act
 		var errorIncorrectVkFormat = KtxValidators.ValidateKtx2HeaderData(msIncorrectVkFormat);
 		var errorProhibitedVkFormat = KtxValidators.ValidateKtx2HeaderData(msProhibitedVkFormat);
 		var errorTypesizeMismatch = KtxValidators.ValidateKtx2HeaderData(msTypesizeMismatch);
 		var errorPixelWidthZero = KtxValidators.ValidateKtx2HeaderData(msPixelWidthZero);
+		var errorPixelWidthHeightCubeMismatch = KtxValidators.ValidateKtx2HeaderData(msPixelWidthHeightCubeMismatch);
 
 		// Assert
 		Assert.That(errorIncorrectVkFormat.isValid, Is.False);
@@ -83,5 +85,8 @@ public class KtxValidatorsTests
 
 		Assert.That(errorPixelWidthZero.isValid, Is.False);
 		Assert.That(errorPixelWidthZero.possibleError, Is.EqualTo("PixelWidth cannot be 0!"));
+
+		Assert.That(errorPixelWidthHeightCubeMismatch.isValid, Is.False);
+		Assert.That(errorPixelWidthHeightCubeMismatch.possibleError, Is.EqualTo("PixelWidth and PixelHeight must be equal for cube textures!"));
 	}
 }

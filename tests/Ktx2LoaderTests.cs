@@ -132,10 +132,12 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header1.metadataDictionary.ContainsKey("KTXorientation"), Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXorientation"].isString, Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXorientation"].stringValue, Is.EqualTo("rd"));
+		Assert.That(Ktx2Metadata.IsReservedKey("KTXorientation"), Is.True);
 
 		Assert.That(ktx2Header1.metadataDictionary.ContainsKey("KTXwriter"), Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXwriter"].isString, Is.True);
 		Assert.That(ktx2Header1.metadataDictionary["KTXwriter"].stringValue, Is.EqualTo("toktx v4.0.__default__ / libktx v4.0.__default__"));
+		Assert.That(Ktx2Metadata.IsReservedKey("KTXwriter"), Is.True);
 
 		Assert.That(ktx2Header1.sgdByteLength, Is.EqualTo(ktx2Supercompression1.supercompressionGlobalDataRaw.Length));
 
@@ -303,6 +305,7 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header4.metadataDictionary.ContainsKey("KTXwriterScParams"), Is.True);
 		Assert.That(ktx2Header4.metadataDictionary["KTXwriterScParams"].isString, Is.True);
 		Assert.That(ktx2Header4.metadataDictionary["KTXwriterScParams"].stringValue, Is.EqualTo("--zlib 9"));
+		Assert.That(Ktx2Metadata.IsReservedKey("KTXwriterScParams"), Is.True);
 		Assert.That(ktx2Header4.metadataDictionary.ContainsKey("KTXwriter"), Is.True);
 		Assert.That(ktx2Header4.metadataDictionary["KTXwriter"].isString, Is.True);
 		Assert.That(ktx2Header4.metadataDictionary["KTXwriter"].stringValue, Is.EqualTo("ktx create v4.4.2 / libktx v4.4.2"));

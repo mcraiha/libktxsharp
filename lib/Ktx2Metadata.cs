@@ -9,6 +9,17 @@ namespace KtxSharp;
 public static class Ktx2Metadata
 {
 	/// <summary>
+	/// Is key reserved?
+	/// </summary>
+	/// <param name="key">Key</param>
+	/// <remarks>Keys that begin with the 3 ASCII characters "KTX" or "ktx" are reserved and must not be used except as described KTX 2.0 specification</remarks>
+	/// <returns>True if it is; False otherwise</returns>
+	public static bool IsReservedKey(string key)
+	{
+		return !string.IsNullOrEmpty(key) && key.StartsWith("ktx", StringComparison.OrdinalIgnoreCase);
+	}
+
+	/// <summary>
 	/// Parse metadata
 	/// </summary>
 	/// <param name="inputArray">Input bytes</param>

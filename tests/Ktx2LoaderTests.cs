@@ -37,14 +37,11 @@ public class Ktx2LoaderTests
 		Assert.That(possibleError4, Is.EqualTo(""));
 	}
 
-	[Test]
-	public void CheckWithValidKtx2SamplesTest()
+	[Test, Description("Test valid KTX2 input sample 1")]
+	public void CheckWithValidKtx2Sample1Test()
 	{
 		// Arrange
 		byte[] inputBytes1 = Ktx2Samples.ktx2Sample1;
-		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
-		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validKtx2Sample2Filename);
-		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validKtx2Sample3Filename);
 
 		// Act
 		Ktx2Structure ktx2Structure1 = null;
@@ -59,46 +56,6 @@ public class Ktx2LoaderTests
 
 		Ktx2TextureData ktx2TextureData1 = ktx2Structure1.ktx2TextureData;
 
-
-		Ktx2Structure ktx2Structure2 = null;
-		using (MemoryStream ms2 = new MemoryStream(inputBytes2))
-		{
-			ktx2Structure2 = Ktx2Loader.LoadInput(ms2);
-		}
-
-		Ktx2Header ktx2Header2 = ktx2Structure2.ktx2Header;
-
-		Ktx2Supercompression ktx2Supercompression2 = ktx2Structure2.ktx2Supercompression;
-
-		Ktx2TextureData ktx2TextureData2 = ktx2Structure2.ktx2TextureData;
-
-
-		Ktx2Structure ktx2Structure3 = null;
-		using (MemoryStream ms3 = new MemoryStream(inputBytes3))
-		{
-			ktx2Structure3 = Ktx2Loader.LoadInput(ms3);
-		}
-
-		Ktx2Header ktx2Header3 = ktx2Structure3.ktx2Header;
-
-		Ktx2Supercompression ktx2Supercompression3 = ktx2Structure3.ktx2Supercompression;
-
-		Ktx2TextureData ktx2TextureData3 = ktx2Structure3.ktx2TextureData;
-
-
-		Ktx2Structure ktx2Structure4 = null;
-		using (MemoryStream ms4 = new MemoryStream(inputBytes4))
-		{
-			ktx2Structure4 = Ktx2Loader.LoadInput(ms4);
-		}
-
-		Ktx2Header ktx2Header4 = ktx2Structure4.ktx2Header;
-
-		Ktx2Supercompression ktx2Supercompression4 = ktx2Structure4.ktx2Supercompression;
-
-		Ktx2TextureData ktx2TextureData4 = ktx2Structure4.ktx2TextureData;
-
-		Ktx2TextureData ktx2TextureData4Uncompressed = ktx2TextureData4.CreateUncompressed();
 
 		// Assert
 		Assert.That(ktx2Header1.vkFormatUint, Is.EqualTo(0));
@@ -144,8 +101,29 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2TextureData1.levelImages.Count, Is.EqualTo(1));
 		Assert.That(ktx2Header1.levelIndexes[0].byteLength, Is.EqualTo(ktx2TextureData1.levelImages[0].Length));
 		Assert.That(ktx2TextureData1.levelImages[0], Is.EqualTo(new byte[] {0x4E, 0x0E, 0x04}));
+	}
+
+	[Test, Description("Test valid KTX2 input sample 2")]
+	public void CheckWithValidKtx2Sample2Test()
+	{
+		// Arrange
+		byte[] inputBytes2 = File.ReadAllBytes(CommonFiles.validKtx2Sample1Filename);
+
+		// Act
+		Ktx2Structure ktx2Structure2 = null;
+		using (MemoryStream ms2 = new MemoryStream(inputBytes2))
+		{
+			ktx2Structure2 = Ktx2Loader.LoadInput(ms2);
+		}
+
+		Ktx2Header ktx2Header2 = ktx2Structure2.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression2 = ktx2Structure2.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData2 = ktx2Structure2.ktx2TextureData;
 
 
+		// Assert
 		Assert.That(ktx2Header2.vkFormatUint, Is.EqualTo(23));
 		Assert.That(ktx2Header2.vkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
 		Assert.That(ktx2Header2.typeSize, Is.EqualTo(1));
@@ -199,8 +177,29 @@ public class Ktx2LoaderTests
 																			0x1A, 0x60, 0x11, 0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06,
 																			0x42, 0x2C, 0x23, 0x33, 0x3B, 0x1C, 0x25, 0x4C, 0x17, 0x1A, 0x60, 0x11,
 																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
+	}
+
+	[Test, Description("Test valid KTX2 input sample 3")]
+	public void CheckWithValidKtx2Sample3Test()
+	{
+		// Arrange
+		byte[] inputBytes3 = File.ReadAllBytes(CommonFiles.validKtx2Sample2Filename);
+
+		// Act
+		Ktx2Structure ktx2Structure3 = null;
+		using (MemoryStream ms3 = new MemoryStream(inputBytes3))
+		{
+			ktx2Structure3 = Ktx2Loader.LoadInput(ms3);
+		}
+
+		Ktx2Header ktx2Header3 = ktx2Structure3.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression3 = ktx2Structure3.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData3 = ktx2Structure3.ktx2TextureData;
 
 
+		// Assert
 		Assert.That(ktx2Header3.vkFormatUint, Is.EqualTo(23));
 		Assert.That(ktx2Header3.vkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
 		Assert.That(ktx2Header3.typeSize, Is.EqualTo(1));
@@ -272,8 +271,30 @@ public class Ktx2LoaderTests
 																			0x1A, 0x60, 0x11, 0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06,
 																			0x42, 0x2C, 0x23, 0x33, 0x3B, 0x1C, 0x25, 0x4C, 0x17, 0x1A, 0x60, 0x11,
 																			0x11, 0x77, 0x0D, 0x0A, 0x90, 0x09, 0x05, 0xAF, 0x06, 0x02, 0xCE, 0x04}));
+	}
 
+	[Test, Description("Test valid KTX2 input sample 4")]
+	public void CheckWithValidKtx2Sample4Test()
+	{
+		// Arrange
+		byte[] inputBytes4 = File.ReadAllBytes(CommonFiles.validKtx2Sample3Filename);
 
+		// Act
+		Ktx2Structure ktx2Structure4 = null;
+		using (MemoryStream ms4 = new MemoryStream(inputBytes4))
+		{
+			ktx2Structure4 = Ktx2Loader.LoadInput(ms4);
+		}
+
+		Ktx2Header ktx2Header4 = ktx2Structure4.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression4 = ktx2Structure4.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData4 = ktx2Structure4.ktx2TextureData;
+
+		Ktx2TextureData ktx2TextureData4Uncompressed = ktx2TextureData4.CreateUncompressed();
+
+		// Assert
 		Assert.That(ktx2Header4.vkFormatUint, Is.EqualTo(23));
 		Assert.That(ktx2Header4.vkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
 		Assert.That(ktx2Header4.typeSize, Is.EqualTo(1));

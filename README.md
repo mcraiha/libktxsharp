@@ -14,6 +14,10 @@ Managed .NET 10/.NET 11 library for handling [KTX File Format](https://registry.
 
 Because KTX specs are public and I needed something like this for my canceled project
 
+## Remarks
+
+Zstandard decoding is only supported with .NET 11 and newer, because it uses `ZstandardStream`
+
 ## How to use
 
 1. Get nuget, build .dll or include [lib folder](lib) in your project

@@ -1,6 +1,6 @@
 # libktxsharp
 
-Managed .NET 10/.NET 8 library for handling [KTX File Format](https://registry.khronos.org/KTX/specs/1.0/ktxspec.v1.html) and [KTX 2.0 file format](https://github.khronos.org/KTX-Specification/ktxspec.v2.html).
+Managed .NET 10/.NET 11 library for handling [KTX File Format](https://registry.khronos.org/KTX/specs/1.0/ktxspec.v1.html) and [KTX 2.0 file format](https://github.khronos.org/KTX-Specification/ktxspec.v2.html).
 
 ## How to use
 

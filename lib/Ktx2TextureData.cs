@@ -72,6 +72,18 @@ public sealed class Ktx2TextureData
 					this.levelImages.Add(outStream.ToArray());
 				}
 			}
+			#if NET11_0_OR_GREATER
+			else if (compressed.supercompression == SupercompressionScheme.Zstandard)
+			{
+				using (MemoryStream outStream = new MemoryStream())
+				using (MemoryStream inStream = new MemoryStream(compressed.levelImages[i]))
+				using (var decompressStream = new ZstandardStream(inStream, CompressionMode.Decompress))
+				{
+					decompressStream.CopyTo(outStream);
+					this.levelImages.Add(outStream.ToArray());
+				}
+			}
+			#endif // NET11_0_OR_GREATER
 		}
 	}
 
@@ -87,6 +99,9 @@ public sealed class Ktx2TextureData
 		{
 			SupercompressionScheme.None => throw new InvalidOperationException("Cannot uncompress textures that are not compressed!"),
 			SupercompressionScheme.ZLIB => new Ktx2TextureData(this),
+			#if NET11_0_OR_GREATER
+			SupercompressionScheme.Zstandard => new Ktx2TextureData(this),
+			#endif // NET11_0_OR_GREATER
 			_ => throw new NotImplementedException("Not implemented yet!")
 		};
 	}

@@ -342,4 +342,74 @@ public class Ktx2LoaderTests
 		Assert.That(ktx2Header4.levelIndexes[0].uncompressedByteLength, Is.EqualTo(ktx2TextureData4Uncompressed.levelImages[0].Length));
 		Assert.That(ktx2TextureData4Uncompressed.levelImages[0], Is.EqualTo(Enumerable.Repeat((byte)0xFF, 192).ToArray()));
 	}
+
+	[Test, Description("Test valid KTX2 input sample 5")]
+	public void CheckWithValidKtx2Sample5Test()
+	{
+		// Arrange
+		byte[] inputBytes5 = File.ReadAllBytes(CommonFiles.validKtx2Sample4Filename);
+
+		// Act
+		Ktx2Structure ktx2Structure5 = null;
+		using (MemoryStream ms5 = new MemoryStream(inputBytes5))
+		{
+			ktx2Structure5 = Ktx2Loader.LoadInput(ms5);
+		}
+
+		Ktx2Header ktx2Header5 = ktx2Structure5.ktx2Header;
+
+		Ktx2Supercompression ktx2Supercompression5 = ktx2Structure5.ktx2Supercompression;
+
+		Ktx2TextureData ktx2TextureData5 = ktx2Structure5.ktx2TextureData;
+
+		Ktx2TextureData ktx2TextureData5Uncompressed = ktx2TextureData5.CreateUncompressed();
+
+		// Assert
+		Assert.That(ktx2Header5.vkFormatUint, Is.EqualTo(23));
+		Assert.That(ktx2Header5.vkFormat, Is.EqualTo(VkFormat.VK_FORMAT_R8G8B8_UNORM));
+		Assert.That(ktx2Header5.typeSize, Is.EqualTo(1));
+		Assert.That(ktx2Header5.pixelWidth, Is.EqualTo(8));
+		Assert.That(ktx2Header5.pixelHeight, Is.EqualTo(8));
+		Assert.That(ktx2Header5.pixelDepth, Is.EqualTo(0));
+		Assert.That(ktx2Header5.supercompressionSchemeUint, Is.EqualTo(2));
+		Assert.That(ktx2Header5.supercompressionScheme, Is.EqualTo(SupercompressionScheme.Zstandard));
+		Assert.That(ktx2Header5.textureType, Is.EqualTo(TextureTypeKtx2.Basic2DNoMipmaps));
+
+		Assert.That(ktx2Header5.dfdByteOffset, Is.EqualTo(0x00000068));
+		Assert.That(ktx2Header5.dfdByteLength, Is.EqualTo(0x0000004C));
+
+		Assert.That(ktx2Header5.kvdByteOffset, Is.EqualTo(0x000000B4));
+		Assert.That(ktx2Header5.kvdByteLength, Is.EqualTo(0x00000050));
+
+		Assert.That(ktx2Header5.sgdByteOffset, Is.EqualTo(0x0000000000000000));
+		Assert.That(ktx2Header5.sgdByteLength, Is.EqualTo(0x0000000000000000));
+
+		Assert.That(ktx2Header5.levelIndexes.Count, Is.EqualTo(1));
+		Assert.That(ktx2Header5.levelIndexes[0].byteOffset, Is.EqualTo(0x0000000000000104));
+		Assert.That(ktx2Header5.levelIndexes[0].byteLength, Is.EqualTo(0x0000000000000011));
+		Assert.That(ktx2Header5.levelIndexes[0].uncompressedByteLength, Is.EqualTo(0x00000000000000C0));
+
+		Assert.That(ktx2Header5.dfdTotalSize, Is.EqualTo(76));
+		Assert.That(ktx2Header5.dataFormatDescriptorRaw.Length, Is.EqualTo(76 - Common.sizeOfUint));
+
+		Assert.That(ktx2Header5.metadataDictionary.Count, Is.EqualTo(2));
+		Assert.That(ktx2Header5.metadataDictionary.ContainsKey("KTXwriterScParams"), Is.True);
+		Assert.That(ktx2Header5.metadataDictionary["KTXwriterScParams"].isString, Is.True);
+		Assert.That(ktx2Header5.metadataDictionary["KTXwriterScParams"].stringValue, Is.EqualTo("--zstd 20"));
+		Assert.That(Ktx2Metadata.IsReservedKey("KTXwriterScParams"), Is.True);
+		Assert.That(ktx2Header5.metadataDictionary.ContainsKey("KTXwriter"), Is.True);
+		Assert.That(ktx2Header5.metadataDictionary["KTXwriter"].isString, Is.True);
+		Assert.That(ktx2Header5.metadataDictionary["KTXwriter"].stringValue, Is.EqualTo("ktx create v4.4.2 / libktx v4.4.2"));
+
+		Assert.That(ktx2Header5.sgdByteLength, Is.EqualTo(ktx2Supercompression5.supercompressionGlobalDataRaw.Length));
+
+		Assert.That(ktx2TextureData5.levelImages.Count, Is.EqualTo(1));
+		Assert.That(ktx2Header5.levelIndexes[0].byteLength, Is.EqualTo(ktx2TextureData5.levelImages[0].Length));
+		Assert.That(ktx2TextureData5.levelImages[0], Is.EqualTo(new byte[] {0x28, 0xB5, 0x2F, 0xFD, 0x20, 0xC0, 0x45, 0x00, 0x00, 0x08, 0xFF, 0x01,
+																			0x00, 0x3C, 0x0A, 0x08, 0x01}));
+
+		Assert.That(ktx2TextureData5.levelImages.Count, Is.EqualTo(ktx2TextureData5Uncompressed.levelImages.Count));
+		Assert.That(ktx2Header5.levelIndexes[0].uncompressedByteLength, Is.EqualTo(ktx2TextureData5Uncompressed.levelImages[0].Length));
+		Assert.That(ktx2TextureData5Uncompressed.levelImages[0], Is.EqualTo(Enumerable.Repeat((byte)0xFF, 192).ToArray()));
+	}
 }

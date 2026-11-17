@@ -77,4 +77,9 @@ public static class CommonFiles
 	/// Third KTX2 sample file is created with ktx create https://github.com/khronosgroup/ktx-software
 	/// </summary>
 	public static readonly string validKtx2Sample3Filename = "8x8_no_mipmaps_zlib.ktx2";
+
+	/// <summary>
+	/// Fourth KTX2 sample file is created with ktx create https://github.com/khronosgroup/ktx-software
+	/// </summary>
+	public static readonly string validKtx2Sample4Filename = "8x8_no_mipmaps_zstd.ktx2";
 }

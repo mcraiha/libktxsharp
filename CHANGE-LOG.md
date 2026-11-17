@@ -1,6 +1,7 @@
-## Version 1.1.0 (released 2026-11-07)
-- Support .NET 11
-- Drop .NET 8
+## Version 1.1.0 (released 2026-11-17)
+- Support .NET 11 (**FEATURE**)
+- Drop .NET 8 (**BREAKING**)
+- Support Zstandard decompression with .NET 11 (**FEATURE**)
 
 ## Version 1.0.0 (released 2026-05-08)
 - Only support .NET 8 and .NET 10 (**FEATURE**)

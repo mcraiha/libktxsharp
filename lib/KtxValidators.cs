@@ -56,9 +56,8 @@ public static class KtxValidators
 		{
 			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
-				// TODO: Use ReadExactly when .NET 8 is support is dropped
 				Span<byte> tempIdentifier = stackalloc byte[Common.ktx1ValidIdentifier.Length];
-				_ = reader.Read(tempIdentifier);
+				reader.ReadExactly(tempIdentifier);
 
 				if (tempIdentifier.SequenceEqual(Common.ktx1ValidIdentifier.Span))
 				{
@@ -87,9 +86,8 @@ public static class KtxValidators
 		{
 			using (BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
 			{
-				// TODO: Use ReadExactly when .NET 8 is support is dropped
 				Span<byte> tempIdentifier = stackalloc byte[Common.ktx2ValidIdentifier.Length];
-				_ = reader.Read(tempIdentifier);
+				reader.ReadExactly(tempIdentifier);
 
 				if (tempIdentifier.SequenceEqual(Common.ktx2ValidIdentifier.Span))
 				{
